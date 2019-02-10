@@ -9,6 +9,9 @@ all: chess
 chess: 
 	$(CC) $(INCLUDE) $(SRC) main.cpp -o main $(LINK) 
 
+ui_test: 
+	$(CC) $(INCLUDE) $(SRC) ui_test.cpp -o ui_test $(LINK) 
+
 clean:
-	rm main 
-.PHONY: all chess 
+	rm main ui_test
+.PHONY: all chess ui_test
