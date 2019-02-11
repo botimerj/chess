@@ -18,8 +18,8 @@
 
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
+void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
 //void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
-//void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
 
 // settings
 const unsigned int SCR_WIDTH = 800;
@@ -45,8 +45,8 @@ int main()
     
     // Call backs
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+    glfwSetMouseButtonCallback(window, mouse_button_callback);
     //glfwSetScrollCallback(window, scroll_callback);
-    //glfwSetMouseButtonCallback(window, mouse_button_callback);
 
     // glad: load all OpenGL function pointers
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
@@ -94,5 +94,13 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height){
     glViewport(0, 0, width, height);
     UI *uiPtr = static_cast<UI*>(glfwGetWindowUserPointer(window));
     uiPtr->resize_window(width, height);
+}
+
+void mouse_button_callback(GLFWwindow* window, int button, int action, int mods){
+    UI *uiPtr = static_cast<UI*>(glfwGetWindowUserPointer(window));
+    if (button == GLFW_MOUSE_BUTTON_LEFT)
+        uiPtr->left_click(action);
+    else if(button == GLFW_MOUSE_BUTTON_RIGHT)
+        uiPtr->right_click(action);
 }
 
