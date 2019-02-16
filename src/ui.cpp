@@ -7,15 +7,18 @@
 UI::UI(GLFWwindow* window, int WIDTH, int HEIGHT){
     this->window = window;
     this->rm = new Resource_manager();
+    this->text = new Text(rm);
     this->resize_window(WIDTH, HEIGHT);
 
 
     // Render the board
     board = new Board(rm);
+    tbox = new Tbox(text);
 }
 
 UI::~UI(){
     delete board;
+    delete tbox;
     delete rm;
 }
 
@@ -29,12 +32,17 @@ void UI::resize_window(int width, int height){
     this->rm->shader[0].use();
     this->rm->shader[0].SetMatrix4f("projection", projection);
     this->rm->shader[0].SetMatrix4f("view", glm::mat4(1.0f));
+
+    this->rm->shader[1].use();
+    this->rm->shader[1].SetMatrix4f("projection", projection);
+    this->rm->shader[1].SetMatrix4f("view", glm::mat4(1.0f));
 }
 
 void UI::render(){
 
     get_mouse_pos();
-    board->render(mouse_pos, aspect_ratio);
+    //board->render(mouse_pos, aspect_ratio);
+    tbox->render();
 }
 
 void UI::right_click(int action){

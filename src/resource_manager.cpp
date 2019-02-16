@@ -7,8 +7,9 @@
 Resource_manager::Resource_manager(){
     std::cout << "Loading Shaders...";
     // Load Shader
-    shader = new Shader[1];
+    shader = new Shader[2];
     this->shader[0].init("shader/shader.vs", "shader/shader.fs");
+    this->shader[1].init("shader/shader.vs", "shader/shader_fonts.fs");
     std::cout << "Success!" << std::endl;
 
     // Load Texture

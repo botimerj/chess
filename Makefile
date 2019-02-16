@@ -1,8 +1,12 @@
 
 CC 		:= g++
-INCLUDE := -Iinclude/ -Isrc/
-LINK 	:= -Lsrc/ -Llib/ -lglfw3 -lglad -lm -lrt -ldl -lX11 -lpthread
+INCLUDE := -Iinclude/ -Isrc/ 
+INCLUDE += -I/usr/include/
+LINK 	:= -Lsrc/ -Llib/ -lfreetype -lglfw3 -lglad -lm -lrt -ldl -lX11 -lpthread
+LINK	+= -L/usr/lib/x86_64-linux-gnu -lz -lpng -lharfbuzz
 SRC 	:= src/*.cpp
+
+
 
 all: chess 
 

@@ -17,7 +17,7 @@
 // Custom libraries
 #include <resource_manager.h>
 #include <board.h>
-
+#include <tbox.h>
 
 // This class defines the user interface.
 class UI{
@@ -30,14 +30,16 @@ public:
     float aspect_ratio;
     glm::mat4 projection;
 
-    // Shaders and textures
+    // Shaders and textures and fonts
     Resource_manager * rm;
+    Text * text;
 
     // Mouse
     glm::vec2 mouse_pos;
 
     // Partitions
     Board * board;
+    Tbox  * tbox;
 
     // UI Functions
     UI(GLFWwindow *window, int WIDTH, int HEIGHT); 
