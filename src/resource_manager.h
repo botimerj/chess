@@ -1,6 +1,9 @@
 #ifndef RM_H
 #define RM_H
 
+// Standard Libraries
+#include <string> 
+
 // Display libraries
 #include <glad/glad.h> 
 #include <GLFW/glfw3.h>
@@ -10,6 +13,9 @@
 // Library for loading textures 
 #include <stb_image/stb_image.h>
 
+// Custom libraries
+#include <tbox.h>
+
 // This class is responsible for holding all the textures and shaders
 // used throughout the program
 
@@ -18,7 +24,12 @@ public:
     Shader    *shader;
     Texture2D *texture;
 
-    Resource_manager();
+    Text       *text;
+    Text       *textb;
+    Text       *texti;
+    Text       *textbi;
+
+    Resource_manager(int width);
     ~Resource_manager();
 };
 

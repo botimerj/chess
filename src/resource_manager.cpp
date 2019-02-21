@@ -4,7 +4,7 @@
 /// Resource Manager Functions ///
 //////////////////////////////////
 
-Resource_manager::Resource_manager(){
+Resource_manager::Resource_manager(int width_i){
     std::cout << "Loading Shaders...";
     // Load Shader
     shader = new Shader[2];
@@ -29,8 +29,20 @@ Resource_manager::Resource_manager(){
     this->texture[1].init(data, width, height, true);
     stbi_image_free(data);
     std::cout << "Success!" << std::endl;
+
+    // Load fonts 
+    text   = new Text(shader, width_i, "textures/fonts/arial.ttf");
+    textb  = new Text(shader, width_i, "textures/fonts/arialbd.ttf");
+    texti  = new Text(shader, width_i, "textures/fonts/ariali.ttf");
+    textbi = new Text(shader, width_i, "textures/fonts/arialbi.ttf");
+
+
 }
 
 Resource_manager::~Resource_manager(){
     delete [] shader;
+    delete text;
+    delete textb;
+    delete texti;
+    delete textbi;
 }

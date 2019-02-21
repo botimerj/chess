@@ -8,6 +8,6 @@ uniform vec3 color;
 void main()
 {    
     vec4 sampled = vec4(1.0, 1.0, 1.0, texture(text, TexCoord).r);
-    //vec4 sampled = texture(text, TexCoord);
+    //vec4 sampled = vec4(0.0, 0.0, texture(text, TexCoord).r, 1.0);
     FragColor = vec4(color, 1.0) * sampled;
 } 

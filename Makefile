@@ -2,8 +2,8 @@
 CC 		:= g++
 INCLUDE := -Iinclude/ -Isrc/ 
 INCLUDE += -I/usr/include/
-LINK 	:= -Lsrc/ -Llib/ -lfreetype -lglfw3 -lglad -lm -lrt -ldl -lX11 -lpthread
-LINK	+= -L/usr/lib/x86_64-linux-gnu -lz -lpng -lharfbuzz
+LINK 	:= -Lsrc/ -Llib/ -L/usr/lib/x86_64-linux-gnu/ -lfreetype -lglfw3 -lglad -lm -lrt -ldl -lX11 -lpthread
+LINK	+= -lz -lpng -lharfbuzz
 SRC 	:= src/*.cpp
 
 

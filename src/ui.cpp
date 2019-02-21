@@ -6,14 +6,13 @@
 
 UI::UI(GLFWwindow* window, int WIDTH, int HEIGHT){
     this->window = window;
-    this->rm = new Resource_manager();
-    this->text = new Text(rm);
+    this->rm = new Resource_manager(WIDTH);
     this->resize_window(WIDTH, HEIGHT);
 
 
     // Render the board
     board = new Board(rm);
-    tbox = new Tbox(text);
+    tbox = new Tbox(rm->text);
 }
 
 UI::~UI(){
@@ -41,8 +40,8 @@ void UI::resize_window(int width, int height){
 void UI::render(){
 
     get_mouse_pos();
-    //board->render(mouse_pos, aspect_ratio);
-    tbox->render();
+    board->render(mouse_pos, aspect_ratio);
+    //tbox->render();
 }
 
 void UI::right_click(int action){

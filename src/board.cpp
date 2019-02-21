@@ -37,6 +37,7 @@ Tile::Tile(Resource_manager *rm){
 
 void Tile::render(glm::vec3 color, glm::vec2 pos, float size){
 
+    // Render tile
     shader->use();
     glm::mat4 model = glm::mat4(1.0f);
     model = glm::translate(model, glm::vec3(pos, 0.0f));
@@ -49,6 +50,16 @@ void Tile::render(glm::vec3 color, glm::vec2 pos, float size){
     glBindVertexArray(this->VAO);
     glDrawArrays(GL_TRIANGLES, 0, 6);
     glBindVertexArray(0);
+
+    // Render text
+    //float tscale = size/(6.0f*text->size_f);
+    ////float twidth = text->characters[str[0]].Advance;
+    //float tsize = text->size_f;
+    //float tdelta = text->size_f/6;
+    //if(bottom_right)
+    //    text->render(str, glm::vec2(pos.x+size/2-tsize*tscale, pos.y+size/2 - tdelta*tscale), tscale);
+    //else
+    //    text->render(str, glm::vec2(pos.x-size/2+tdelta*tscale, pos.y-size/2 + tsize*tscale), tscale);
 
 }
 
@@ -114,6 +125,8 @@ void Piece::render(glm::vec2 pos, float size){
 ///////////////////////
 
 Board::Board(Resource_manager *rm){
+    // Text
+    text = rm->text;
 
     // Visuals
     coor = glm::vec2(0.2f,0.2f);
@@ -123,7 +136,7 @@ Board::Board(Resource_manager *rm){
     color_arr[0] = glm::vec3(0.2f,0.2f,0.2f); // black
     color_arr[1] = glm::vec3(0.8f,0.8f,0.8f); // white 
 
-    color_arr[2] = glm::vec3(0.8f,0.8f,0.8f); // highlighted 
+    color_arr[2] = glm::vec3(1.0f,0.2f,0.2f); // highlighted 
     color_arr[3] = glm::vec3(0.4f,0.4f,1.0f); // selected 
     color_arr[4] = glm::vec3(0.6f,0.6f,1.0f); // played from 
     color_arr[5] = glm::vec3(1.0f,0.2f,0.2f); // check 
@@ -170,8 +183,11 @@ Board::Board(Resource_manager *rm){
     }
 
     // Game state 
-    selected = TS::e;
-    selected_idx = glm::vec2(-1.0f, -1.0f);
+    selected        = TS::e;
+    selected_idx    = glm::ivec2(-1, -1);
+    check_idx       = glm::ivec2(-1, -1);
+    played_from_idx = glm::ivec2(-1, -1);
+    played_to_idx   = glm::ivec2(-1, -1);
 }
 
 Board::~Board(){
@@ -180,24 +196,41 @@ Board::~Board(){
 
 void Board::render(glm::vec2 mpos, float aspect_ratio){
 
+    // Tile and text size/positioning
+    
     float tile_size = dim/8;
+    float tscale = tile_size/(6.0f*text->size_f);
+    float tsize = text->size_f;
+    float tdelta = text->size_f/6;
 
     float x_initial = -aspect_ratio + coor.x + tile_size/2;
     float y_initial = -1.0f + coor.y + tile_size/2;
-
     glm::vec2 pos(x_initial, y_initial);
 
     int t = 1;
     // Paint Tiles
     for(int y = 0; y < 8; y++){
         for(int x = 0; x < 8; x++){
-            // Paint tiles and pieces
+            // Paint tiles 
             int c_idx = static_cast<int> (bcolor[x][y]);
             glm::vec3 tc(color_arr[t].x*color_arr[c_idx].x,
                          color_arr[t].y*color_arr[c_idx].y,
                          color_arr[t].z*color_arr[c_idx].z);
             tile->render(tc, pos, tile_size);
 
+            // Add text to board
+            if(y == 7){
+                char c = 'a'+static_cast<char>(x);
+                glm::vec2 tpos(pos.x+tile_size/2-tsize*tscale, pos.y+tile_size/2 - tdelta*tscale);
+                text->render(std::string(&c), tpos, color_arr[!t], tscale);
+            }
+            if(x == 0){
+                char c = '8'-static_cast<char>(y);
+                glm::vec2 tpos(pos.x-tile_size/2+tdelta*tscale, pos.y-tile_size/2 + tsize*tscale);
+                text->render(std::string(&c), tpos, color_arr[!t], tscale);
+            }
+
+            // Paint pieces
             int piece_idx = static_cast<int> (bstate[x][y]);
             if(piece_idx != TS::e){
                 pieces[piece_idx].render(pos, tile_size);
@@ -216,16 +249,45 @@ void Board::render(glm::vec2 mpos, float aspect_ratio){
         int piece_idx = static_cast<int> (selected);
         pieces[selected].render(mpos, tile_size);
     }
+
+}
+
+void Board::recolor_tiles(){
+
+    for(int y = 0; y < 8; y++){
+        for(int x = 0; x < 8; x++)
+            bcolor[x][y] = TC::none; 
+    }
+    
+    if(played_to_idx.x != -1 && played_to_idx.y != -1) 
+        bcolor[played_to_idx.x][played_to_idx.y] = TC::played; 
+    if(played_from_idx.x != -1 && played_from_idx.y != -1)
+        bcolor[played_from_idx.x][played_from_idx.y] = TC::played; 
+    if(check_idx.x != -1 && check_idx.y != -1)
+        bcolor[check_idx.x][check_idx.y] = TC::check; 
+    for(std::list<glm::ivec2>::iterator it=highlight_idx.begin(); it != highlight_idx.end(); ++it){
+        if( it->x != -1 && it->y != -1){
+            bcolor[it->x][it->y] = TC::highlight; 
+        }
+    }
 }
 
 void Board::board_right_click(glm::vec2 mpos){
     int xidx, yidx;
     get_board_idx(mpos, &xidx, &yidx);
     if(xidx != -1 && yidx != -1){
-        if(bcolor[xidx][yidx] != highlight)
+        bool found = (std::find(highlight_idx.begin(), 
+                                highlight_idx.end(), 
+                                glm::ivec2(xidx,yidx)) != highlight_idx.end());
+        if(!found){
             bcolor[xidx][yidx] = TC::highlight;
-        else
+            highlight_idx.push_back(glm::ivec2(xidx,yidx));
+        }
+        else{
             bcolor[xidx][yidx] = TC::none;
+            highlight_idx.remove(glm::ivec2(xidx,yidx));
+            recolor_tiles();
+        }
     }
 }
 
@@ -233,10 +295,11 @@ void Board::board_right_click(glm::vec2 mpos){
 void Board::board_left_click(glm::vec2 mpos, bool down){
     int xidx, yidx;
     get_board_idx(mpos, &xidx, &yidx);
+    std::cout << "Board idx: " << xidx << "," << yidx << std::endl;
     // Left click press 
     if(down){    
         if(xidx != -1 && yidx != -1){
-            selected_idx = glm::vec2(xidx, yidx);
+            selected_idx = glm::ivec2(xidx, yidx);
             selected = bstate[xidx][yidx];
             bstate[xidx][yidx] = TS::e;
             bcolor[xidx][yidx] = TC::tile_select;
@@ -244,18 +307,22 @@ void Board::board_left_click(glm::vec2 mpos, bool down){
     }
     // Left click release 
     else{
-        if(this->selected != TS::e){ 
+        if(selected != TS::e){ 
             if(xidx == -1 || yidx == -1){
-                int old_idx_x = static_cast<int>(selected_idx.x);
-                int old_idx_y = static_cast<int>(selected_idx.y);
-                bstate[old_idx_x][old_idx_y] = TS::e;
+                // Put piece back where it came from (or so help me!)
+                bstate[selected_idx.x][selected_idx.y] = selected;
             }else{
                 bstate[xidx][yidx] = selected;
+
+                played_to_idx = selected_idx;
+                played_from_idx = glm::ivec2(xidx,yidx);
             }
             selected = TS::e;
-            bcolor[xidx][yidx] = TC::none;
         }
+        // Recolor important tiles after clicks
+        recolor_tiles();
     }
+
 }
 
 void Board::get_board_idx(glm::vec2 mpos, int *x, int *y){

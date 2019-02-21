@@ -3,6 +3,8 @@
 
 // Standard libraries
 #include <vector>
+#include <list> 
+#include <algorithm>
 
 // Display libraries
 #include <glad/glad.h> 
@@ -26,6 +28,7 @@ public:
 
     Tile(Resource_manager *rm);
     void render(glm::vec3 color, glm::vec2 pos, float size);
+                                                           
 };
 
 // Piece class for drawing board pieces
@@ -52,7 +55,7 @@ enum TC{
     black,
     highlight,
     tile_select,
-    played_from,
+    played,
     check,
     none
 };
@@ -60,6 +63,10 @@ enum TC{
 // Board class responsible for all things board 
 class Board{
 public:
+
+    // For printing things
+    Text        *text;
+
     // An array of TS to depict current board state 
     TS bstate[8][8];         
     TC bcolor[8][8];
@@ -72,10 +79,11 @@ public:
 
     // Board state
     TS selected;
-    glm::vec2 higlight_idx;
-    glm::vec2 check_idx;
-    glm::vec2 selected_idx;
-    glm::vec2 played_from_idx;
+    glm::ivec2 selected_idx;
+    glm::ivec2 check_idx;
+    glm::ivec2 played_from_idx;
+    glm::ivec2 played_to_idx;
+    std::list<glm::ivec2> highlight_idx;
 
 
     Tile * tile;
@@ -85,6 +93,7 @@ public:
     ~Board();
 
     void render(glm::vec2 mpos, float aspect_ratio);
+    void recolor_tiles();
 
     // Clicking the board 
     void board_right_click(glm::vec2 mpos);

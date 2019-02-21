@@ -21,7 +21,7 @@
 #include <glm/gtc/type_ptr.hpp>
 
 // Custom libraries
-#include <resource_manager.h>
+//#include <resource_manager.h>
 
 
 struct Character{
@@ -39,9 +39,9 @@ public:
     float        size_f;
     Shader *shader;
 
-    Text(Resource_manager *rm);
-    void resize_text(unsigned int size);
-    void render(std::string str, glm::vec2 pos, float size);
+    Text(Shader *shader_i, int screen_width, const char* font_file);
+    void resize_text(unsigned int size, int width, const char* font_file);
+    void render(std::string str, glm::vec2 pos, glm::vec3 color, float size);
 };
 
 class Tbox{

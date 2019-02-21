@@ -32,7 +32,6 @@ public:
 
     // Shaders and textures and fonts
     Resource_manager * rm;
-    Text * text;
 
     // Mouse
     glm::vec2 mouse_pos;
