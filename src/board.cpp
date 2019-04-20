@@ -124,7 +124,7 @@ void Piece::render(glm::vec2 pos, float size){
 /// Board Functions ///
 ///////////////////////
 
-Board::Board(Resource_manager *rm){
+Board::Board(Resource_manager *rm, TS (*bstate_in)[8]){
     // Text
     text = rm->text;
 
@@ -152,34 +152,13 @@ Board::Board(Resource_manager *rm){
     }
 
     // Board state initialization
+    bstate = bstate_in;
+
+    // Board color init
     for(int y = 0; y < 8; y++){
         for(int x = 0; x < 8; x++){
-            bstate[x][y] = TS::e; // empty
             bcolor[x][y] = TC::none; // empty
         }
-    }
-
-    bstate[0][0] = TS::r;
-    bstate[1][0] = TS::n;
-    bstate[2][0] = TS::b;
-    bstate[3][0] = TS::q;
-    bstate[4][0] = TS::k;
-    bstate[5][0] = TS::b;
-    bstate[6][0] = TS::n;
-    bstate[7][0] = TS::r;
-
-    bstate[0][7] = TS::R;
-    bstate[1][7] = TS::N;
-    bstate[2][7] = TS::B;
-    bstate[3][7] = TS::Q;
-    bstate[4][7] = TS::K;
-    bstate[5][7] = TS::B;
-    bstate[6][7] = TS::N;
-    bstate[7][7] = TS::R;
-
-    for(int i = 0; i < 8; i++){
-        bstate[i][1] = TS::p;
-        bstate[i][6] = TS::P;
     }
 
     // Game state 
@@ -195,6 +174,7 @@ Board::~Board(){
 }
 
 void Board::render(glm::vec2 mpos, float aspect_ratio){
+
 
     // Tile and text size/positioning
     

@@ -9,16 +9,29 @@ UI::UI(GLFWwindow* window, int WIDTH, int HEIGHT){
     this->rm = new Resource_manager(WIDTH);
     this->resize_window(WIDTH, HEIGHT);
 
+    // Create game state
+    game = new Game();
 
     // Render the board
-    board = new Board(rm);
+    board = new Board(rm, game->bstate);
     tbox = new Tbox(rm->text);
+
+    // Start listening for std in 
+    exit = true; // I'm pretty sure this could case a race
+    t_listen = std::thread(&UI::listen, this); 
+
 }
 
 UI::~UI(){
+    // Delete resources 
     delete board;
     delete tbox;
     delete rm;
+    delete game;
+
+    // End threads and join 
+    exit = false;
+    t_listen.join();
 }
 
 void UI::resize_window(int width, int height){
@@ -61,12 +74,24 @@ void UI::left_click(int action){
     glm::vec2 board_mouse_pos(aspect_ratio + mouse_pos.x - board->coor.x,
                               1.0f + mouse_pos.y - board->coor.y);
     board->board_left_click(board_mouse_pos, down);
+
 }
+
 
 void UI::get_mouse_pos(){
     double xposd, yposd;
     glfwGetCursorPos(window, &xposd, &yposd);
     mouse_pos.x = static_cast<float>(2.0f*aspect_ratio/WIDTH*xposd - aspect_ratio);
     mouse_pos.y = static_cast<float>(2.0f/HEIGHT*yposd - 1);
+}
+
+void UI::listen(){
+    char in[256];
+    while(exit){
+        std::cin.getline(in, 256);
+        if( std::string(in).compare("reset") == 0 ){
+            game->set_board(std::string("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"));
+        }
+    }
 }
 

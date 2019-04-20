@@ -68,7 +68,7 @@ public:
     Text        *text;
 
     // An array of TS to depict current board state 
-    TS bstate[8][8];         
+    TS (*bstate)[8];         
     TC bcolor[8][8];
 
     // Board display characteristics
@@ -89,7 +89,7 @@ public:
     Tile * tile;
     std::vector<Piece> pieces;
 
-    Board(Resource_manager *rm);
+    Board(Resource_manager *rm, TS bstate_in[][8]);
     ~Board();
 
     void render(glm::vec2 mpos, float aspect_ratio);

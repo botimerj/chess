@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <iostream>
+#include <thread>
 
 // Display libraries
 #include <glad/glad.h> 
@@ -16,6 +17,7 @@
 
 // Custom libraries
 #include <resource_manager.h>
+#include <game.h>
 #include <board.h>
 #include <tbox.h>
 
@@ -40,6 +42,9 @@ public:
     Board * board;
     Tbox  * tbox;
 
+    // Game State
+    Game * game;
+
     // UI Functions
     UI(GLFWwindow *window, int WIDTH, int HEIGHT); 
     ~UI();
@@ -49,6 +54,11 @@ public:
     void left_click(int action);
     void right_click(int action);
     void get_mouse_pos();
+
+    // stdin handler
+    bool exit;
+    std::thread t_listen;
+    void listen();
 
 };
 
