@@ -32,18 +32,11 @@ void Game::fen_to_gs(std::string fen){
     std::vector<std::string> string_list;
     std::size_t lower = 0;
     std::size_t upper = 0;
-    while(lower != std::string::npos){
-        std::string tmp;
-        if(lower == 0){
-            tmp = fen.substr(lower,std::string::npos);
-        }else{
-            tmp = fen.substr(lower+1,std::string::npos);
-        }
-        upper = tmp.find(" ");
-        std::string new_string = fen.substr(lower+1, upper);
-        string_list.push_back(new_string);
 
-        fen = tmp;
+    while(lower != std::string::npos){
+        upper = fen.find(" ");
+        string_list.push_back(fen.substr(0,upper));
+        fen = fen.substr(upper+1, std::string::npos);
         lower = upper;
     }
 
@@ -75,7 +68,6 @@ void Game::fen_to_gs(std::string fen){
     total_moves = std::stoi(string_list[5], nullptr, 10);
 
     // Set board state
-    //std::string str = fen.substr(0,fen.find(" "));
     std::string str = string_list[0];
 
     // Convert all numbers to a series of '-' 
@@ -108,3 +100,7 @@ void Game::fen_to_gs(std::string fen){
     }
 }
 
+//void Game::gs_to_fen(){
+//    
+//
+//}
