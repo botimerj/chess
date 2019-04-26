@@ -16,6 +16,10 @@ chess:
 ui_test: 
 	$(CC) $(INCLUDE) $(SRC) ui_test.cpp -o ui_test $(LINK) 
 
+game_test: 
+	$(CC) $(INCLUDE) src/game.cpp game_test.cpp -o game_test 
+
+
 clean:
 	rm main ui_test
-.PHONY: all chess ui_test
+.PHONY: all chess ui_test game_test

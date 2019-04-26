@@ -90,7 +90,23 @@ void UI::listen(){
     while(exit){
         std::cin.getline(in, 256);
         if( std::string(in).compare("reset") == 0 ){
-            game->set_board(std::string("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"));
+            //game->set_board(std::string("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"));
+            game->set_board(game->default_pos);
+        }
+        if( std::string(in).compare("print") == 0 ) {
+            std::cout << game->gs_to_fen() << std::endl;
+        }
+        if( std::string(in).compare("set") == 0 ) {
+            // open file, read fen string, and set board
+            std::fstream f;
+            f.open("fen");
+            if(!f.is_open()){
+                std::cout << "Error opening file" << std::endl;
+            }
+            char line[256];
+            f.getline(line,256);
+            game->set_board(std::string(line));
+            f.close();
         }
     }
 }
