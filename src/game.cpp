@@ -1,5 +1,9 @@
 #include <game.h>
 
+///////////////////////////
+/// Game State Functions //
+///////////////////////////
+
 Game::Game(){
 
     std::string ts_str("qkrnbpQKRNBP-");
@@ -9,12 +13,7 @@ Game::Game(){
         char_to_ts.insert(std::pair<char, TS>(*e, static_cast<TS>(i++)));
     }
 
-
-    //std::string default_pos("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
     default_pos = std::string("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
-
-    //std::string default_pos("2kr2nr/1pp1p2p/p3Pppb/3p4/3P1B2/5NP1/PP2QP1P/nN3K1R w - - 1 15");
-
     set_board(default_pos);
 }
 
@@ -139,6 +138,17 @@ std::string Game::gs_to_fen(){
         fen.append(*e);
         //std::cout << *e << std::endl;
     }
-
     return fen;
+}
+
+bool Game::move(TS sel, glm::ivec2 to, glm::ivec2 from){
+    bool valid_move = false;
+
+    // Check turn
+    if( (static_cast<int>(sel) < 6 && !turn) || (static_cast<int>(sel) >= 6 && turn) ){
+        valid_move = true;
+        turn = !turn;
+    }
+
+    return valid_move;
 }

@@ -124,7 +124,7 @@ void Piece::render(glm::vec2 pos, float size){
 /// Board Functions ///
 ///////////////////////
 
-Board::Board(Resource_manager *rm, TS (*bstate_in)[8]){
+Board::Board(Resource_manager *rm, Game * game_in){
     // Text
     text = rm->text;
 
@@ -151,8 +151,8 @@ Board::Board(Resource_manager *rm, TS (*bstate_in)[8]){
         } 
     }
 
-    // Board state initialization
-    bstate = bstate_in;
+    // Game state pointer
+    game = game_in;
 
     // Board color init
     for(int y = 0; y < 8; y++){
@@ -174,7 +174,6 @@ Board::~Board(){
 }
 
 void Board::render(glm::vec2 mpos, float aspect_ratio){
-
 
     // Tile and text size/positioning
     
@@ -211,7 +210,7 @@ void Board::render(glm::vec2 mpos, float aspect_ratio){
             }
 
             // Paint pieces
-            int piece_idx = static_cast<int> (bstate[x][y]);
+            int piece_idx = static_cast<int> (game->bstate[x][y]);
             if(piece_idx != TS::e){
                 pieces[piece_idx].render(pos, tile_size);
             }
@@ -275,13 +274,13 @@ void Board::board_right_click(glm::vec2 mpos){
 void Board::board_left_click(glm::vec2 mpos, bool down){
     int xidx, yidx;
     get_board_idx(mpos, &xidx, &yidx);
-    std::cout << "Board idx: " << xidx << "," << yidx << std::endl;
+    //std::cout << "Board idx: " << xidx << "," << yidx << std::endl;
     // Left click press 
     if(down){    
         if(xidx != -1 && yidx != -1){
             selected_idx = glm::ivec2(xidx, yidx);
-            selected = bstate[xidx][yidx];
-            bstate[xidx][yidx] = TS::e;
+            selected = game->bstate[xidx][yidx];
+            game->bstate[xidx][yidx] = TS::e;
             bcolor[xidx][yidx] = TC::tile_select;
         }
     }
@@ -289,13 +288,17 @@ void Board::board_left_click(glm::vec2 mpos, bool down){
     else{
         if(selected != TS::e){ 
             if(xidx == -1 || yidx == -1){
-                // Put piece back where it came from (or so help me!)
-                bstate[selected_idx.x][selected_idx.y] = selected;
+                // Put that piece back where it came from (or so help me!)
+                game->bstate[selected_idx.x][selected_idx.y] = selected;
             }else{
-                bstate[xidx][yidx] = selected;
+                if(game->move(selected, selected_idx, glm::ivec2(xidx,yidx))){
+                    game->bstate[xidx][yidx] = selected;
 
-                played_to_idx = selected_idx;
-                played_from_idx = glm::ivec2(xidx,yidx);
+                    played_to_idx = selected_idx;
+                    played_from_idx = glm::ivec2(xidx,yidx);
+                }else{
+                    game->bstate[selected_idx.x][selected_idx.y] = selected;
+                }
             }
             selected = TS::e;
         }

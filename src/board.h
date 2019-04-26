@@ -18,6 +18,7 @@
 
 // Custom libraries
 #include <resource_manager.h>
+#include <game.h>
 
 //Tile class for drawing board tiles
 class Tile{
@@ -42,13 +43,6 @@ public:
     void render(glm::vec2 pos, float size);
 };
 
-// Tile state
-enum TS{
-    q,k,r,n,b,p,
-    Q,K,R,N,B,P,
-    e 
-};
-
 // Tile color 
 enum TC{
     white,
@@ -68,7 +62,7 @@ public:
     Text        *text;
 
     // An array of TS to depict current board state 
-    TS (*bstate)[8];         
+    Game * game;
     TC bcolor[8][8];
 
     // Board display characteristics
@@ -89,7 +83,7 @@ public:
     Tile * tile;
     std::vector<Piece> pieces;
 
-    Board(Resource_manager *rm, TS bstate_in[][8]);
+    Board(Resource_manager *rm, Game * game);
     ~Board();
 
     void render(glm::vec2 mpos, float aspect_ratio);

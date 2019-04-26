@@ -1,13 +1,25 @@
 #ifndef GAME_H
 #define GAME_H
 
+// Standard Libraries
 #include <iostream>
 #include <string> 
 #include <vector> 
 #include <map>
 
-#include <board.h>
+// GLM libraries
+#include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
+// Custom libraries
+//#include <board.h>
+
+// Tile state
+enum TS{
+    q,k,r,n,b,p,
+    Q,K,R,N,B,P,
+    e 
+};
 
 class Game{
 public:
@@ -25,16 +37,17 @@ public:
     std::string en_passant;
     int  fifty_move_rule;
     int  total_moves;
-    // Some way to hold 3 move repeat // 
+    // Some way to hold 3 move repeat 
 
     std::string default_pos;
 
 
     Game();
     void set_board(std::string str_in);
-    //std::string fen_to_gs(std::string fen);
     void fen_to_gs(std::string fen);
     std::string gs_to_fen();
+
+    bool move(TS sel, glm::ivec2 to, glm::ivec2 from);
 
 };
 

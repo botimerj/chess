@@ -13,7 +13,7 @@ UI::UI(GLFWwindow* window, int WIDTH, int HEIGHT){
     game = new Game();
 
     // Render the board
-    board = new Board(rm, game->bstate);
+    board = new Board(rm, game);
     tbox = new Tbox(rm->text);
 
     // Start listening for std in 
@@ -90,7 +90,6 @@ void UI::listen(){
     while(exit){
         std::cin.getline(in, 256);
         if( std::string(in).compare("reset") == 0 ){
-            //game->set_board(std::string("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"));
             game->set_board(game->default_pos);
         }
         if( std::string(in).compare("print") == 0 ) {
