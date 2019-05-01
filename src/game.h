@@ -4,7 +4,9 @@
 // Standard Libraries
 #include <iostream>
 #include <string> 
+#include <algorithm> 
 #include <vector> 
+#include <list> 
 #include <map>
 
 // GLM libraries
@@ -34,8 +36,9 @@ public:
     bool wq_castle;         
     bool bk_castle;
     bool bq_castle;
-    std::string en_passant;
+    glm::ivec2 en_passant;
     int  fifty_move_rule;
+    int  onehundred_move_rule;
     int  total_moves;
     // Some way to hold 3 move repeat 
 
@@ -47,8 +50,25 @@ public:
     void fen_to_gs(std::string fen);
     std::string gs_to_fen();
 
+    // Move calculations
     bool move(TS sel, glm::ivec2 to, glm::ivec2 from);
+    std::list<glm::ivec2> valid_moves(TS sel, glm::ivec2 from);
+    std::list<glm::ivec2> candidate_moves(TS sel, glm::ivec2 from);
+    std::list<glm::ivec2> pawn   (glm::ivec2 from);
+    std::list<glm::ivec2> bishop (glm::ivec2 from);
+    std::list<glm::ivec2> rook   (glm::ivec2 from);
+    std::list<glm::ivec2> queen  (glm::ivec2 from);
+    std::list<glm::ivec2> knight (glm::ivec2 from);
+    std::list<glm::ivec2> king   (glm::ivec2 from);
+    //bool in_check(int color);
+    bool tile_attacked(glm::ivec2 tile, int color);
 
+    // Helper functions
+    glm::ivec2 king_idx(int color);
+    int ts_color(TS tile);
+    bool opposite_piece(glm::ivec2 idx0, glm::ivec2 idx1);
+    TS read_bstate(int x, int y);
+    bool in_bounds(int x, int y);
 };
 
 #endif

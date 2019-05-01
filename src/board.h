@@ -93,6 +93,11 @@ public:
     void board_right_click(glm::vec2 mpos);
     void board_left_click(glm::vec2 mpos, bool down);
     void get_board_idx(glm::vec2 mpos, int *xidx, int *yidx);
+
+
+    // For Debug
+    std::list<glm::ivec2> move_list;
+    // For Debug
 };
 
 #endif

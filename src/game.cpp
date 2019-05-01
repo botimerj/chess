@@ -36,7 +36,7 @@ void Game::fen_to_gs(std::string fen){
     }
 
     // Set turn
-    turn = "w" == string_list[1];
+    turn = !("w" == string_list[1]);
 
     // Set castling
     wk_castle = string_list[2].find("K") != std::string::npos;
@@ -45,10 +45,15 @@ void Game::fen_to_gs(std::string fen){
     bq_castle = string_list[2].find("q") != std::string::npos;
 
     // Set en passant 
-    en_passant = string_list[3];
+    std::string ep = string_list[3];
+    if(ep == "-") en_passant = glm::ivec2(-1, -1);
+    else          en_passant = glm::ivec2(ep[0]-'a', 7-(ep[1]-'0'));
+    //std::cout << "(" << en_passant.x << "," << en_passant.y << ")" << std::endl;
+    //en_passant = string_list[3];
 
     // Set fifty move rule and number of turns
     fifty_move_rule = std::stoi(string_list[4], nullptr, 10);
+    onehundred_move_rule = fifty_move_rule*2;
     total_moves = std::stoi(string_list[5], nullptr, 10);
 
     // set board state
@@ -127,7 +132,15 @@ std::string Game::gs_to_fen(){
     string_list.push_back(castling);
 
     // En Passant
-    string_list.push_back(en_passant+std::string(" "));
+    if(en_passant.x == -1 || en_passant.y == -1){
+        string_list.push_back(std::string("- "));
+    }else{
+        char tmp[3];
+        tmp[0] = en_passant.x + 'a';
+        tmp[1] = 7-en_passant.y + '0';
+        tmp[2] = '\0';
+        string_list.push_back(std::string(tmp) + std::string(" "));
+    }
 
     // Fifty move rule and total moves
     string_list.push_back(std::string(std::to_string(fifty_move_rule) + std::string(" ")));
@@ -141,14 +154,377 @@ std::string Game::gs_to_fen(){
     return fen;
 }
 
+////////////////////////
+// Movement Functions //
+////////////////////////
+
 bool Game::move(TS sel, glm::ivec2 to, glm::ivec2 from){
-    bool valid_move = false;
+
+    // Check same square
+    bool same_square = (to.x == from.x) && (to.y == from.y);
 
     // Check turn
-    if( (static_cast<int>(sel) < 6 && !turn) || (static_cast<int>(sel) >= 6 && turn) ){
-        valid_move = true;
+    bool turn_order = ts_color(sel)==turn;
+    
+    // Check rules
+    std::list<glm::ivec2> move_list = valid_moves(sel, from);
+    bool legal_move = std::find(move_list.begin(), move_list.end(), to) != move_list.end();
+
+    //bool valid_move = !same_square && turn_order && legal_move;
+
+    // Perform move 
+    if(!same_square && turn_order && legal_move){
+        // Update move count when blacks move finishes
+        if(turn==1){
+            total_moves += 1;
+        }
+
+        // Update turn
         turn = !turn;
+
+        // Update castling 
+        if(sel == TS::R || sel == TS::K){
+            if((from.x==4 || from.x==7) && from.y==7) wk_castle = false;
+            if((from.x==4 || from.x==0) && from.y==7) wq_castle = false;
+        }
+        if(sel == TS::r || sel == TS::k){
+            if((from.x==4 || from.x==7) && from.y==0) bk_castle = false;
+            if((from.x==4 || from.x==0) && from.y==0) bq_castle = false;
+        }
+
+
+        // Update fifty_move_rule
+        if( sel==TS::p || sel==TS::P || opposite_piece(to,from) ) 
+            onehundred_move_rule = 0;
+        else
+            onehundred_move_rule += 1;
+        fifty_move_rule = static_cast<int>(onehundred_move_rule/2);
+
+        // Update board
+        bstate[from.x][from.y] = TS::e;
+        bstate[to.x][to.y] = sel;
+
+        // Special cases
+        if(sel==TS::K && (to.x-from.x)==2){ bstate[5][7]=TS::R; bstate[7][7]=TS::e; }
+        if(sel==TS::K && (from.x-to.x)==2){ bstate[3][7]=TS::R; bstate[0][7]=TS::e; }
+        if(sel==TS::k && (to.x-from.x)==2){ bstate[5][0]=TS::r; bstate[7][0]=TS::e; }
+        if(sel==TS::k && (from.x-to.x)==2){ bstate[3][0]=TS::r; bstate[0][0]=TS::e; }
+
+        if(to.x==en_passant.x && to.y==en_passant.y) {
+            if(sel==TS::P) bstate[to.x][3]=TS::e;
+            if(sel==TS::p) bstate[to.x][4]=TS::e;
+        }
+        
+        // Promotion not handled
+        
+        // Update en passant
+        if(sel == TS::P && (from.y-to.y)==2)
+            en_passant = glm::ivec2(from.x, from.y-1);
+        else if(sel == TS::p && (to.y-from.y)==2)
+            en_passant = glm::ivec2(from.x, from.y+1);
+        else
+            en_passant = glm::ivec2(-1, -1);
+
+        return true;
+    }
+    else{
+        return false;
+    }
+}
+
+std::list<glm::ivec2> Game::valid_moves(TS sel, glm::ivec2 from){
+
+    bool wk_castle_tmp = wk_castle;          
+    bool wq_castle_tmp = wq_castle;         
+    bool bk_castle_tmp = bk_castle;
+    bool bq_castle_tmp = bq_castle;
+
+    // Temp castling variables
+    if( tile_attacked(glm::ivec2(5,7), 1) ||  
+        tile_attacked(glm::ivec2(6,7), 1)) wk_castle = false;
+    if( tile_attacked(glm::ivec2(2,7), 1) ||  
+        tile_attacked(glm::ivec2(3,7), 1)) wq_castle = false;
+    if( tile_attacked(glm::ivec2(5,0), 0) ||  
+        tile_attacked(glm::ivec2(6,0), 0)) bk_castle = false;
+    if( tile_attacked(glm::ivec2(2,0), 0) ||  
+        tile_attacked(glm::ivec2(3,0), 0)) bq_castle = false;
+
+    std::list<glm::ivec2> move_list = candidate_moves(sel, from);
+    std::list<glm::ivec2> valid_move_list;
+
+    glm::ivec2 k_idx;
+    for(std::list<glm::ivec2>::iterator it = move_list.begin(); it != move_list.end(); ++it){
+        TS tmp_ts = bstate[(*it).x][(*it).y];
+        bstate[(*it).x][(*it).y] = sel;
+        bstate[from.x][from.y] = TS::e;
+        k_idx = king_idx(ts_color(sel));
+        if(!tile_attacked(k_idx, !ts_color(sel))){
+            valid_move_list.push_back(*it);
+        }
+        bstate[from.x][from.y] = sel;
+        bstate[it->x][it->y] = tmp_ts;
+    }
+    
+
+    wk_castle = wk_castle_tmp;          
+    wq_castle = wq_castle_tmp;         
+    bk_castle = bk_castle_tmp;
+    bq_castle = bq_castle_tmp;
+
+    return valid_move_list;
+}
+
+std::list<glm::ivec2> Game::candidate_moves(TS sel, glm::ivec2 from){
+    std::list<glm::ivec2> move_list;
+
+    switch (sel){
+        case TS::q: case TS::Q:
+            move_list = queen(from);
+            break;
+        case TS::k: case TS::K:
+            move_list = king(from);
+            break;
+        case TS::r: case TS::R:
+            move_list = rook(from);
+            break;
+        case TS::n: case TS::N:
+            move_list = knight(from);
+            break;
+        case TS::b: case TS::B:
+            move_list = bishop(from);
+            break;
+        case TS::p: case TS::P:
+            move_list = pawn(from);
+            break;
+        default: 
+            break;
     }
 
-    return valid_move;
+    return move_list;
+}
+
+std::list<glm::ivec2> Game::pawn(glm::ivec2 from){
+    std::list<glm::ivec2> move_list;
+
+    // White moves 'negative' and Black moves 'positive'
+    int mod = (static_cast<int>(bstate[from.x][from.y]) == static_cast<int>(TS::p)) ? 1 : -1;
+
+    if( in_bounds(from.x,from.y+mod) && read_bstate(from.x,from.y+mod) == TS::e ){
+        // Move forward one square as long as its empty
+        move_list.push_back(glm::ivec2(from.x,from.y+mod));
+        if( (read_bstate(from.x,from.y+mod+mod) == TS::e) && 
+            ((mod==-1 && from.y==6) || (mod==1 && from.y==1)) )
+                // Move forward two squares as long as its empty and its the inital move
+                move_list.push_back(glm::ivec2(from.x,from.y+mod+mod));
+    }
+
+    // Take diagonally if opposing piece is there and its in bounds
+    glm::ivec2 idx(from.x+1, from.y+mod);
+    if(opposite_piece(idx, from) && in_bounds(idx.x, idx.y) )
+        move_list.push_back(idx);
+
+    idx = glm::ivec2(from.x-1, from.y+mod);
+    if(opposite_piece(idx, from) && in_bounds(idx.x, idx.y) )
+        move_list.push_back(idx);
+
+
+    // Take en_passant if available
+    if(from.x+1 == en_passant.x && from.y+mod == en_passant.y)
+        move_list.push_back(glm::ivec2(from.x+1,from.y+mod));
+    if(from.x-1 == en_passant.x && from.y+mod == en_passant.y)
+        move_list.push_back(glm::ivec2(from.x-1,from.y+mod));
+
+    return move_list;
+}
+
+std::list<glm::ivec2> Game::bishop(glm::ivec2 from){
+    std::list<glm::ivec2> move_list;
+
+    std::list<glm::ivec2> mod_list;
+    mod_list.push_back(glm::ivec2( 1,  1));
+    mod_list.push_back(glm::ivec2(-1,  1));
+    mod_list.push_back(glm::ivec2( 1, -1));
+    mod_list.push_back(glm::ivec2(-1, -1));
+
+    for(std::list<glm::ivec2>::iterator it = mod_list.begin(); it != mod_list.end(); ++it){
+        glm::ivec2 mod = *it;
+        glm::ivec2 idx(from.x+mod.x, from.y+mod.y);
+        while(read_bstate(idx.x, idx.y) == TS::e && in_bounds(idx.x,idx.y)){
+            move_list.push_back(idx);
+            idx = glm::ivec2(idx.x+mod.x, idx.y+mod.y);
+        }
+        if( opposite_piece(idx, from) ){ move_list.push_back(idx); }
+    }
+
+    return move_list;
+}
+
+std::list<glm::ivec2> Game::rook(glm::ivec2 from){
+    std::list<glm::ivec2> move_list;
+
+    std::list<glm::ivec2> mod_list;
+    mod_list.push_back(glm::ivec2( 0,  1));
+    mod_list.push_back(glm::ivec2( 0, -1));
+    mod_list.push_back(glm::ivec2( 1,  0));
+    mod_list.push_back(glm::ivec2(-1,  0));
+
+    for(std::list<glm::ivec2>::iterator it = mod_list.begin(); it != mod_list.end(); ++it){
+        glm::ivec2 mod = *it;
+        glm::ivec2 idx(from.x+mod.x, from.y+mod.y);
+        while(read_bstate(idx.x, idx.y) == TS::e && in_bounds(idx.x,idx.y)){
+            move_list.push_back(idx);
+            idx = glm::ivec2(idx.x+mod.x, idx.y+mod.y);
+        }
+        if( opposite_piece(idx, from) ){ move_list.push_back(idx); }
+    }
+    return move_list;
+}
+
+std::list<glm::ivec2> Game::queen(glm::ivec2 from){
+    std::list<glm::ivec2> move_list;
+
+    std::list<glm::ivec2> mod_list;
+    mod_list.push_back(glm::ivec2( 1,  1));
+    mod_list.push_back(glm::ivec2(-1,  1));
+    mod_list.push_back(glm::ivec2( 1, -1));
+    mod_list.push_back(glm::ivec2(-1, -1));
+    mod_list.push_back(glm::ivec2( 0,  1));
+    mod_list.push_back(glm::ivec2( 0, -1));
+    mod_list.push_back(glm::ivec2( 1,  0));
+    mod_list.push_back(glm::ivec2(-1,  0));
+
+    for(std::list<glm::ivec2>::iterator it = mod_list.begin(); it != mod_list.end(); ++it){
+        glm::ivec2 mod = *it;
+        glm::ivec2 idx(from.x+mod.x, from.y+mod.y);
+        while(read_bstate(idx.x, idx.y) == TS::e && in_bounds(idx.x,idx.y)){
+            move_list.push_back(idx);
+            idx = glm::ivec2(idx.x+mod.x, idx.y+mod.y);
+        }
+        if( opposite_piece(idx, from) ){ move_list.push_back(idx); }
+    }
+    return move_list;
+}
+
+std::list<glm::ivec2> Game::knight(glm::ivec2 from){
+    std::list<glm::ivec2> move_list;
+
+    std::list<glm::ivec2> mod_list;
+    mod_list.push_back(glm::ivec2( 1,  2));
+    mod_list.push_back(glm::ivec2( 2,  1));
+    mod_list.push_back(glm::ivec2(-1,  2));
+    mod_list.push_back(glm::ivec2(-2,  1));
+    mod_list.push_back(glm::ivec2( 1, -2));
+    mod_list.push_back(glm::ivec2( 2, -1));
+    mod_list.push_back(glm::ivec2(-1, -2));
+    mod_list.push_back(glm::ivec2(-2, -1));
+
+    for(std::list<glm::ivec2>::iterator it = mod_list.begin(); it != mod_list.end(); ++it){
+        glm::ivec2 mod = *it;
+        glm::ivec2 idx(from.x+mod.x, from.y+mod.y);
+        if((read_bstate(idx.x, idx.y)==TS::e || opposite_piece(idx, from)) && in_bounds(idx.x,idx.y)){
+            move_list.push_back(idx);
+        }
+    }
+    return move_list;
+}
+
+std::list<glm::ivec2> Game::king(glm::ivec2 from){
+    std::list<glm::ivec2> move_list;
+
+    std::list<glm::ivec2> mod_list;
+    mod_list.push_back(glm::ivec2(-1, -1));
+    mod_list.push_back(glm::ivec2(-1,  0));
+    mod_list.push_back(glm::ivec2(-1,  1));
+    mod_list.push_back(glm::ivec2( 0, -1));
+    mod_list.push_back(glm::ivec2( 0,  1));
+    mod_list.push_back(glm::ivec2( 1, -1));
+    mod_list.push_back(glm::ivec2( 1,  0));
+    mod_list.push_back(glm::ivec2( 1,  1));
+
+    for(std::list<glm::ivec2>::iterator it = mod_list.begin(); it != mod_list.end(); ++it){
+        glm::ivec2 mod = *it;
+        glm::ivec2 idx(from.x+mod.x, from.y+mod.y);
+        if((read_bstate(idx.x, idx.y)==TS::e || opposite_piece(idx, from)) && in_bounds(idx.x,idx.y)){
+            move_list.push_back(idx);
+        }
+    }
+    
+    // Castling 
+    glm::ivec2 idx(from.x, from.y);
+    if(ts_color(read_bstate(from.x,from.y))==0){
+        if(wk_castle && bstate[5][7]==TS::e && 
+                        bstate[6][7]==TS::e) move_list.push_back(glm::ivec2(idx.x+2,idx.y));
+        if(wq_castle && bstate[3][7]==TS::e &&
+                        bstate[2][7]==TS::e && 
+                        bstate[1][7]==TS::e) move_list.push_back(glm::ivec2(idx.x-2,idx.y));
+    }else if(ts_color(read_bstate(from.x,from.y))==1){
+        if(bk_castle && bstate[5][0]==TS::e && 
+                        bstate[6][0]==TS::e) move_list.push_back(glm::ivec2(idx.x+2,idx.y));
+        if(bq_castle && bstate[3][0]==TS::e &&
+                        bstate[2][0]==TS::e && 
+                        bstate[1][0]==TS::e) move_list.push_back(glm::ivec2(idx.x-2,idx.y));
+    }
+
+    return move_list;
+}
+
+bool Game::tile_attacked(glm::ivec2 tile, int color){
+    TS tmp_ts = bstate[tile.x][tile.y];
+    if(color == 0) // White
+        bstate[tile.x][tile.y] = TS::p; // Put a black pawn to sample if it is attacked
+    if(color == 1) 
+        bstate[tile.x][tile.y] = TS::P;
+
+    bool attacked = false;
+    TS sel;
+    for(int i = 0; i < 8; i++){
+        for(int j = 0; j < 8; j++){
+            sel = bstate[i][j];
+            if(sel == TS::e || (tile.x==i && tile.y==j)){ continue; }
+            if(ts_color(sel) == color){ 
+                std::list<glm::ivec2> move_list = candidate_moves(sel, glm::ivec2(i,j));
+                if(std::find(move_list.begin(), move_list.end(), tile) != move_list.end())
+                    attacked = true;
+            }
+        }
+    }
+
+    // Reset bstate
+    bstate[tile.x][tile.y] = tmp_ts;
+    return attacked;
+}
+
+// Helper functions
+glm::ivec2 Game::king_idx(int color){
+    for(int i = 0; i < 8; i++){
+        for(int j = 0; j < 8; j++){
+            if(color == 0 && bstate[i][j] == TS::K)
+                return glm::ivec2(i,j);
+            if(color == 1 && bstate[i][j] == TS::k)
+                return glm::ivec2(i,j);
+        }
+    }
+    return glm::ivec2(-1,-1);
+}
+
+bool Game::opposite_piece(glm::ivec2 idx0, glm::ivec2 idx1){
+    return (ts_color(read_bstate(idx0.x,idx0.y))==0 && ts_color(read_bstate(idx1.x,idx1.y))==1) ||
+           (ts_color(read_bstate(idx0.x,idx0.y))==1 && ts_color(read_bstate(idx1.x,idx1.y))==0);
+}
+
+int Game::ts_color(TS tile){
+    int tile_int = static_cast<int> (tile);
+    if     (tile_int < 6){ return 1; }
+    else if(tile_int >= 6 && tile_int < 12){ return 0; }
+    else{ return 2; }
+}
+
+TS Game::read_bstate(int x, int y){
+    // Out of bounds
+    if( !in_bounds(x,y) ) {return TS::e;}
+    else {return bstate[x][y];}
+}
+
+bool Game::in_bounds(int x, int y){
+    return x >=0 && x < 8 && y >= 0 && y < 8;
 }

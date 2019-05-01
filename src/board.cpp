@@ -211,7 +211,7 @@ void Board::render(glm::vec2 mpos, float aspect_ratio){
 
             // Paint pieces
             int piece_idx = static_cast<int> (game->bstate[x][y]);
-            if(piece_idx != TS::e){
+            if(piece_idx != TS::e && !(selected_idx.x == x && selected_idx.y == y)){
                 pieces[piece_idx].render(pos, tile_size);
             }
 
@@ -249,6 +249,12 @@ void Board::recolor_tiles(){
             bcolor[it->x][it->y] = TC::highlight; 
         }
     }
+
+    // For Debug
+    for(std::list<glm::ivec2>::iterator it=move_list.begin(); it != move_list.end(); ++it){
+        bcolor[it->x][it->y] = TC::check;
+    }
+    // For Debug
 }
 
 void Board::board_right_click(glm::vec2 mpos){
@@ -270,7 +276,6 @@ void Board::board_right_click(glm::vec2 mpos){
     }
 }
 
-
 void Board::board_left_click(glm::vec2 mpos, bool down){
     int xidx, yidx;
     get_board_idx(mpos, &xidx, &yidx);
@@ -280,28 +285,37 @@ void Board::board_left_click(glm::vec2 mpos, bool down){
         if(xidx != -1 && yidx != -1){
             selected_idx = glm::ivec2(xidx, yidx);
             selected = game->bstate[xidx][yidx];
-            game->bstate[xidx][yidx] = TS::e;
             bcolor[xidx][yidx] = TC::tile_select;
+
+            /*// For debug
+            if(selected != TS::e){
+                move_list = game->valid_moves(selected, selected_idx);
+                recolor_tiles();
+            }
+            // For debug*/
         }
     }
     // Left click release 
     else{
-        if(selected != TS::e){ 
-            if(xidx == -1 || yidx == -1){
-                // Put that piece back where it came from (or so help me!)
-                game->bstate[selected_idx.x][selected_idx.y] = selected;
-            }else{
-                if(game->move(selected, selected_idx, glm::ivec2(xidx,yidx))){
-                    game->bstate[xidx][yidx] = selected;
+        bool out_of_bounds = (xidx == -1 || yidx == -1);
+        if(selected != TS::e && !out_of_bounds){ 
+            if( game->move(selected, glm::ivec2(xidx,yidx), selected_idx) ){
 
-                    played_to_idx = selected_idx;
-                    played_from_idx = glm::ivec2(xidx,yidx);
+                played_from_idx = selected_idx;
+                played_to_idx = glm::ivec2(xidx,yidx);
+
+                glm::ivec2 k_idx = game->king_idx(game->turn);
+                if(game->tile_attacked(k_idx, !game->turn)){
+                    check_idx = k_idx;
                 }else{
-                    game->bstate[selected_idx.x][selected_idx.y] = selected;
+                    check_idx = glm::ivec2(-1,-1);
                 }
             }
-            selected = TS::e;
         }
+        selected = TS::e;
+        selected_idx = glm::ivec2(-1,-1);
+        move_list.clear();
+
         // Recolor important tiles after clicks
         recolor_tiles();
     }
