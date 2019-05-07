@@ -19,7 +19,9 @@ ui_test:
 game_test: 
 	$(CC) $(INCLUDE) src/game.cpp game_test.cpp -o game_test 
 
+agent0:
+	$(CC) $(INCLUDE) src/game.cpp agent0.cpp -o agent0 $(LINK) 
 
 clean:
 	rm main ui_test
-.PHONY: all chess ui_test game_test
+.PHONY: all chess ui_test game_test agent0

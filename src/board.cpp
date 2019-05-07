@@ -50,17 +50,6 @@ void Tile::render(glm::vec3 color, glm::vec2 pos, float size){
     glBindVertexArray(this->VAO);
     glDrawArrays(GL_TRIANGLES, 0, 6);
     glBindVertexArray(0);
-
-    // Render text
-    //float tscale = size/(6.0f*text->size_f);
-    ////float twidth = text->characters[str[0]].Advance;
-    //float tsize = text->size_f;
-    //float tdelta = text->size_f/6;
-    //if(bottom_right)
-    //    text->render(str, glm::vec2(pos.x+size/2-tsize*tscale, pos.y+size/2 - tdelta*tscale), tscale);
-    //else
-    //    text->render(str, glm::vec2(pos.x-size/2+tdelta*tscale, pos.y-size/2 + tsize*tscale), tscale);
-
 }
 
 ///////////////////////
@@ -131,6 +120,7 @@ Board::Board(Resource_manager *rm, Game * game_in){
     // Visuals
     coor = glm::vec2(0.2f,0.2f);
     dim = 2.0f - 0.2f*2;
+    flip = false;
 
     // Tile Color arr
     color_arr[0] = glm::vec3(0.2f,0.2f,0.2f); // black
@@ -145,11 +135,14 @@ Board::Board(Resource_manager *rm, Game * game_in){
     // Create tiles and Pieces array
     tile = new Tile(rm); 
     float x_offset, y_offset;
-    for(int y = 0; y < 2; y++){
-        for(int x = 0; x < 6; x++){
-            pieces.push_back(Piece(rm, x, y));
-        } 
-    }
+    //for(int y = 0; y < 2; y++){
+    //    for(int x = 0; x < 6; x++){
+    //        pieces.push_back(Piece(rm, x, y));
+    //    } 
+    //}
+    int piece_order[6] = {1,0,4,3,2,5};
+    for(int i=0; i < 6; i++) pieces.push_back(Piece(rm,piece_order[i],1));
+    for(int i=0; i < 6; i++) pieces.push_back(Piece(rm,piece_order[i],0));
 
     // Game state pointer
     game = game_in;
@@ -184,9 +177,16 @@ void Board::render(glm::vec2 mpos, float aspect_ratio){
 
     float x_initial = -aspect_ratio + coor.x + tile_size/2;
     float y_initial = -1.0f + coor.y + tile_size/2;
+    int t = 1;
+    int mod = 1;
+    if(flip){
+        x_initial += dim-tile_size;
+        y_initial += dim-tile_size;
+        t = 0;
+        mod = -1;
+    }
     glm::vec2 pos(x_initial, y_initial);
 
-    int t = 1;
     // Paint Tiles
     for(int y = 0; y < 8; y++){
         for(int x = 0; x < 8; x++){
@@ -217,9 +217,9 @@ void Board::render(glm::vec2 mpos, float aspect_ratio){
 
             // Increment position
             t = !t;
-            pos = glm::vec2(pos.x + tile_size, pos.y);
+            pos = glm::vec2(pos.x + mod*tile_size, pos.y);
         }
-        pos = glm::vec2(x_initial, pos.y + tile_size);
+        pos = glm::vec2(x_initial, pos.y + mod*tile_size);
         t = !t;
     }
 
@@ -300,7 +300,8 @@ void Board::board_left_click(glm::vec2 mpos, bool down){
         bool out_of_bounds = (xidx == -1 || yidx == -1);
         if(selected != TS::e && !out_of_bounds){ 
             if( game->move(selected, glm::ivec2(xidx,yidx), selected_idx) ){
-
+                move(selected_idx, glm::ivec2(xidx,yidx));
+                /*
                 played_from_idx = selected_idx;
                 played_to_idx = glm::ivec2(xidx,yidx);
 
@@ -309,7 +310,7 @@ void Board::board_left_click(glm::vec2 mpos, bool down){
                     check_idx = k_idx;
                 }else{
                     check_idx = glm::ivec2(-1,-1);
-                }
+                }*/
             }
         }
         selected = TS::e;
@@ -319,7 +320,19 @@ void Board::board_left_click(glm::vec2 mpos, bool down){
         // Recolor important tiles after clicks
         recolor_tiles();
     }
+}
 
+void Board::move(glm::ivec2 from, glm::ivec2 to){
+    played_from_idx = from;
+    played_to_idx = to;
+
+    glm::ivec2 k_idx = game->king_idx(game->turn);
+    if(game->tile_attacked(k_idx, !game->turn)){
+        check_idx = k_idx;
+    }else{
+        check_idx = glm::ivec2(-1,-1);
+    }
+    recolor_tiles();
 }
 
 void Board::get_board_idx(glm::vec2 mpos, int *x, int *y){
@@ -329,6 +342,10 @@ void Board::get_board_idx(glm::vec2 mpos, int *x, int *y){
     // Check if a piece was selected 
     xposd = floor(xposd/(dim/8));
     yposd = floor(yposd/(dim/8));
+    if(flip){
+        xposd = 7-xposd;
+        yposd = 7-yposd;
+    }
 
     if(xposd > 7 || xposd < 0)
         xposd = -1;
@@ -337,6 +354,7 @@ void Board::get_board_idx(glm::vec2 mpos, int *x, int *y){
 
     *x = static_cast<int>(xposd);
     *y = static_cast<int>(yposd);
+
 }
 
 

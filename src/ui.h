@@ -4,6 +4,12 @@
 #include <vector>
 #include <iostream>
 #include <thread>
+#include <cctype>
+#include <unistd.h>     // getpid()
+#include <sys/types.h>
+
+#define PIPE_READ 0
+#define PIPE_WRITE 1
 
 // Display libraries
 #include <glad/glad.h> 
@@ -20,6 +26,10 @@
 #include <game.h>
 #include <board.h>
 #include <tbox.h>
+#include <menu.h>
+
+
+
 
 // This class defines the user interface.
 class UI{
@@ -41,6 +51,7 @@ public:
     // Partitions
     Board * board;
     Tbox  * tbox;
+    Menu  * menu;
 
     // Game State
     Game * game;
@@ -59,7 +70,14 @@ public:
     bool exit;
     std::thread t_listen;
     void listen();
+    bool valid_move_string(char * in);
 
+    // agent handler
+    bool kill_agent;
+    std::thread t_agent;
+    void agent_handler();
+    void write_log_file(int pid, const char * status);
+    void clear_log_file();
 };
 
 #endif

@@ -192,7 +192,6 @@ bool Game::move(TS sel, glm::ivec2 to, glm::ivec2 from){
             if((from.x==4 || from.x==0) && from.y==0) bq_castle = false;
         }
 
-
         // Update fifty_move_rule
         if( sel==TS::p || sel==TS::P || opposite_piece(to,from) ) 
             onehundred_move_rule = 0;
@@ -215,7 +214,10 @@ bool Game::move(TS sel, glm::ivec2 to, glm::ivec2 from){
             if(sel==TS::p) bstate[to.x][4]=TS::e;
         }
         
-        // Promotion not handled
+        // Promotion not handled correctly
+        if(sel==TS::P && to.y==0) bstate[to.x][to.y] = TS::Q;
+        if(sel==TS::p && to.y==7) bstate[to.x][to.y] = TS::q;
+        
         
         // Update en passant
         if(sel == TS::P && (from.y-to.y)==2)

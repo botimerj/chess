@@ -68,10 +68,11 @@ public:
     // Board display characteristics
     glm::vec2 coor;
     float dim;
+    bool flip;
 
     glm::vec3 color_arr[7];
 
-    // Board state
+    // Board color state
     TS selected;
     glm::ivec2 selected_idx;
     glm::ivec2 check_idx;
@@ -92,6 +93,7 @@ public:
     // Clicking the board 
     void board_right_click(glm::vec2 mpos);
     void board_left_click(glm::vec2 mpos, bool down);
+    void move(glm::ivec2 from, glm::ivec2 to);
     void get_board_idx(glm::vec2 mpos, int *xidx, int *yidx);
 
 

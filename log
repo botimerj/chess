@@ -1,0 +1,1078 @@
+18018: Start agent handler
+18018: Begin parent
+18034: Starting agent0 (from child)
+18018: asked for suggestion
+18034: Start agent0
+18034: suggest|e2e4
+18018: got suggestion: e2e4
+
+18018: wrote move: e2e4
+18034: valid  |e2e4
+
+18018: asked for suggestion
+18034: suggest|a7a6
+18018: got suggestion: a7a6
+
+18018: wrote move: a7a6
+18034: valid  |a7a6
+
+18018: asked for suggestion
+18034: suggest|d2d3
+18018: got suggestion: d2d3
+
+18018: wrote move: d2d3
+18034: valid  |d2d3
+
+18018: asked for suggestion
+18034: suggest|d7d5
+18018: got suggestion: d7d5
+
+18018: wrote move: d7d5
+18034: valid  |d7d5
+
+18018: asked for suggestion
+18034: suggest|b2b4
+18018: got suggestion: b2b4
+
+18018: wrote move: b2b4
+18034: valid  |b2b4
+
+18018: asked for suggestion
+18034: suggest|a8a7
+18018: got suggestion: a8a7
+
+18018: wrote move: a8a7
+18034: valid  |a8a7
+
+18018: asked for suggestion
+18034: suggest|c2c3
+18018: got suggestion: c2c3
+
+18018: wrote move: c2c3
+18034: valid  |c2c3
+
+18018: asked for suggestion
+18034: suggest|c7c6
+18018: got suggestion: c7c6
+
+18018: wrote move: c7c6
+18034: valid  |c7c6
+
+18018: asked for suggestion
+18034: suggest|g2g4
+18018: got suggestion: g2g4
+
+18018: wrote move: g2g4
+18034: valid  |g2g4
+
+18018: asked for suggestion
+18034: suggest|g8h6
+18018: got suggestion: g8h6
+
+18018: wrote move: g8h6
+18034: valid  |g8h6
+
+18018: asked for suggestion
+18034: suggest|h2h3
+18018: got suggestion: h2h3
+
+18018: wrote move: h2h3
+18034: valid  |h2h3
+
+18018: asked for suggestion
+18034: suggest|e7e6
+18018: got suggestion: e7e6
+
+18018: wrote move: e7e6
+18034: valid  |e7e6
+
+18018: asked for suggestion
+18034: suggest|c1b2
+18018: got suggestion: c1b2
+
+18018: wrote move: c1b2
+18034: valid  |c1b2
+
+18018: asked for suggestion
+18034: suggest|e6e5
+18018: got suggestion: e6e5
+
+18018: wrote move: e6e5
+18034: valid  |e6e5
+
+18018: asked for suggestion
+18034: suggest|a2a4
+18018: got suggestion: a2a4
+
+18018: wrote move: a2a4
+18034: valid  |a2a4
+
+18018: asked for suggestion
+18034: suggest|a6a5
+18018: got suggestion: a6a5
+
+18018: wrote move: a6a5
+18034: valid  |a6a5
+
+18018: asked for suggestion
+18034: suggest|g1e2
+18018: got suggestion: g1e2
+
+18018: wrote move: g1e2
+18034: valid  |g1e2
+
+18018: asked for suggestion
+18034: suggest|a7a6
+18018: got suggestion: a7a6
+
+18018: wrote move: a7a6
+18034: valid  |a7a6
+
+18018: asked for suggestion
+18034: suggest|a1a3
+18018: got suggestion: a1a3
+
+18018: wrote move: a1a3
+18034: valid  |a1a3
+
+18018: asked for suggestion
+18034: suggest|a6a8
+18018: got suggestion: a6a8
+
+18018: wrote move: a6a8
+18034: valid  |a6a8
+
+18018: asked for suggestion
+18034: suggest|e1d2
+18018: got suggestion: e1d2
+
+18018: wrote move: e1d2
+18034: valid  |e1d2
+
+18018: asked for suggestion
+18034: suggest|d8e7
+18018: got suggestion: d8e7
+
+18018: wrote move: d8e7
+18034: valid  |d8e7
+
+18018: asked for suggestion
+18034: suggest|e4d5
+18018: got suggestion: e4d5
+
+18018: wrote move: e4d5
+18034: valid  |e4d5
+
+18018: asked for suggestion
+18034: suggest|f7f6
+18018: got suggestion: f7f6
+
+18018: wrote move: f7f6
+18034: valid  |f7f6
+
+18018: asked for suggestion
+18034: suggest|g4g5
+18018: got suggestion: g4g5
+
+18018: wrote move: g4g5
+18034: valid  |g4g5
+
+18018: asked for suggestion
+18034: suggest|c8d7
+18018: got suggestion: c8d7
+
+18018: wrote move: c8d7
+18034: valid  |c8d7
+
+18018: asked for suggestion
+18034: suggest|b4a5
+18018: got suggestion: b4a5
+
+18018: wrote move: b4a5
+18034: valid  |b4a5
+
+18018: asked for suggestion
+18034: suggest|e5e4
+18018: got suggestion: e5e4
+
+18018: wrote move: e5e4
+18034: valid  |e5e4
+
+18018: asked for suggestion
+18034: suggest|f2f4
+18018: got suggestion: f2f4
+
+18018: wrote move: f2f4
+18034: valid  |f2f4
+
+18018: asked for suggestion
+18034: suggest|g7g6
+18018: got suggestion: g7g6
+
+18018: wrote move: g7g6
+18034: valid  |g7g6
+
+18018: asked for suggestion
+18034: suggest|d2e3
+18018: got suggestion: d2e3
+
+18018: wrote move: d2e3
+18034: valid  |d2e3
+
+18018: asked for suggestion
+18034: suggest|b7b5
+18018: got suggestion: b7b5
+
+18018: wrote move: b7b5
+18034: valid  |b7b5
+
+18018: asked for suggestion
+18034: suggest|e2g3
+18018: got suggestion: e2g3
+
+18018: wrote move: e2g3
+18034: valid  |e2g3
+
+18018: asked for suggestion
+18034: suggest|a8a6
+18018: got suggestion: a8a6
+
+18018: wrote move: a8a6
+18034: valid  |a8a6
+
+18018: asked for suggestion
+18034: suggest|b1d2
+18018: got suggestion: b1d2
+
+18018: wrote move: b1d2
+18034: valid  |b1d2
+
+18018: asked for suggestion
+18034: suggest|d7g4
+18018: got suggestion: d7g4
+
+18018: wrote move: d7g4
+18034: valid  |d7g4
+
+18018: asked for suggestion
+18034: suggest|c3c4
+18018: got suggestion: c3c4
+
+18018: wrote move: c3c4
+18034: valid  |c3c4
+
+18018: asked for suggestion
+18034: suggest|a6b6
+18018: got suggestion: a6b6
+
+18018: wrote move: a6b6
+18034: valid  |a6b6
+
+18018: asked for suggestion
+18034: suggest|d1f3
+18018: got suggestion: d1f3
+
+18018: wrote move: d1f3
+18034: valid  |d1f3
+
+18018: asked for suggestion
+18034: suggest|f6g5
+18018: got suggestion: f6g5
+
+18018: wrote move: f6g5
+18034: valid  |f6g5
+
+18018: asked for suggestion
+18034: suggest|h1h2
+18018: got suggestion: h1h2
+
+18018: wrote move: h1h2
+18034: valid  |h1h2
+
+18018: asked for suggestion
+18034: suggest|b5b4
+18018: got suggestion: b5b4
+
+18018: wrote move: b5b4
+18034: valid  |b5b4
+
+18018: asked for suggestion
+18034: suggest|f1g2
+18018: got suggestion: f1g2
+
+18018: wrote move: f1g2
+18034: valid  |f1g2
+
+18018: asked for suggestion
+18034: suggest|b8d7
+18018: got suggestion: b8d7
+
+18018: wrote move: b8d7
+18034: valid  |b8d7
+
+18018: asked for suggestion
+18034: suggest|h2h1
+18018: got suggestion: h2h1
+
+18018: wrote move: h2h1
+18034: valid  |h2h1
+
+18018: asked for suggestion
+18034: suggest|e8f7
+18018: got suggestion: e8f7
+
+18018: wrote move: e8f7
+18034: valid  |e8f7
+
+18018: asked for suggestion
+18034: suggest|d3e4
+18018: got suggestion: d3e4
+
+18018: wrote move: d3e4
+18034: valid  |d3e4
+
+18018: asked for suggestion
+18034: suggest|c6d5
+18018: got suggestion: c6d5
+
+18018: wrote move: c6d5
+18034: valid  |c6d5
+
+18018: asked for suggestion
+18034: suggest|f3g4
+18018: got suggestion: f3g4
+
+18018: wrote move: f3g4
+18034: valid  |f3g4
+
+18018: asked for suggestion
+18034: suggest|d7c5
+18018: got suggestion: d7c5
+
+18018: wrote move: d7c5
+18034: valid  |d7c5
+
+18018: asked for suggestion
+18034: suggest|d2f1
+18018: got suggestion: d2f1
+
+18018: wrote move: d2f1
+18034: valid  |d2f1
+
+18018: asked for suggestion
+18034: suggest|f8g7
+18018: got suggestion: f8g7
+
+18018: wrote move: f8g7
+18034: valid  |f8g7
+
+18018: asked for suggestion
+18034: suggest|b2c1
+18018: got suggestion: b2c1
+
+18018: wrote move: b2c1
+18034: valid  |b2c1
+
+18018: asked for suggestion
+18034: suggest|d5e4
+18018: got suggestion: d5e4
+
+18018: wrote move: d5e4
+18034: valid  |d5e4
+
+18018: asked for suggestion
+18034: suggest|e3e2
+18018: got suggestion: e3e2
+
+18018: wrote move: e3e2
+18034: valid  |e3e2
+
+18018: asked for suggestion
+18034: suggest|b6a6
+18018: got suggestion: b6a6
+
+18018: wrote move: b6a6
+18034: valid  |b6a6
+
+18018: asked for suggestion
+18034: suggest|h3h4
+18018: got suggestion: h3h4
+
+18018: wrote move: h3h4
+18034: valid  |h3h4
+
+18018: asked for suggestion
+18034: suggest|h6g8
+18018: got suggestion: h6g8
+
+18018: wrote move: h6g8
+18034: valid  |h6g8
+
+18018: asked for suggestion
+18034: suggest|g4c8
+18018: got suggestion: g4c8
+
+18018: wrote move: g4c8
+18034: valid  |g4c8
+
+18018: asked for suggestion
+18034: suggest|f7f6
+18018: got suggestion: f7f6
+
+18018: wrote move: f7f6
+18034: valid  |f7f6
+
+18018: asked for suggestion
+18034: suggest|a3b3
+18018: got suggestion: a3b3
+
+18018: wrote move: a3b3
+18034: valid  |a3b3
+
+18018: asked for suggestion
+18034: suggest|f6f7
+18018: got suggestion: f6f7
+
+18018: wrote move: f6f7
+18034: valid  |f6f7
+
+18018: asked for suggestion
+18034: suggest|g3h5
+18018: got suggestion: g3h5
+
+18018: wrote move: g3h5
+18034: valid  |g3h5
+
+18018: asked for suggestion
+18034: suggest|c5a4
+18018: got suggestion: c5a4
+
+18018: wrote move: c5a4
+18034: valid  |c5a4
+
+18018: asked for suggestion
+18034: suggest|e2f2
+18018: got suggestion: e2f2
+
+18018: wrote move: e2f2
+18034: valid  |e2f2
+
+18018: asked for suggestion
+18034: suggest|h7h6
+18018: got suggestion: h7h6
+
+18018: wrote move: h7h6
+18034: valid  |h7h6
+
+18018: asked for suggestion
+18034: suggest|c4c5
+18018: got suggestion: c4c5
+
+18018: wrote move: c4c5
+18034: valid  |c4c5
+
+18018: asked for suggestion
+18034: suggest|g6h5
+18018: got suggestion: g6h5
+
+18018: wrote move: g6h5
+18034: valid  |g6h5
+
+18018: asked for suggestion
+18034: suggest|c5c6
+18018: got suggestion: c5c6
+
+18018: wrote move: c5c6
+18034: valid  |c5c6
+
+18018: asked for suggestion
+18034: suggest|a4b2
+18018: got suggestion: a4b2
+
+18018: wrote move: a4b2
+18034: valid  |a4b2
+
+18018: asked for suggestion
+18034: suggest|c8a6
+18018: got suggestion: c8a6
+
+18018: wrote move: c8a6
+18034: valid  |c8a6
+
+18018: asked for suggestion
+18034: suggest|e7f8
+18018: got suggestion: e7f8
+
+18018: wrote move: e7f8
+18034: valid  |e7f8
+
+18018: asked for suggestion
+18034: suggest|f4g5
+18018: got suggestion: f4g5
+
+18018: wrote move: f4g5
+18034: valid  |f4g5
+
+18018: asked for suggestion
+18034: suggest|f7g6
+18018: got suggestion: f7g6
+
+18018: wrote move: f7g6
+18034: valid  |f7g6
+
+18018: asked for suggestion
+18034: suggest|c1f4
+18018: got suggestion: c1f4
+
+18018: wrote move: c1f4
+18034: valid  |c1f4
+
+18018: asked for suggestion
+18034: suggest|h8h7
+18018: got suggestion: h8h7
+
+18018: wrote move: h8h7
+18034: valid  |h8h7
+
+18018: asked for suggestion
+18034: suggest|c6c7
+18018: got suggestion: c6c7
+
+18018: wrote move: c6c7
+18034: valid  |c6c7
+
+18018: asked for suggestion
+18034: suggest|g6f7
+18018: got suggestion: g6f7
+
+18018: wrote move: g6f7
+18034: valid  |g6f7
+
+18018: asked for suggestion
+18034: suggest|h1h2
+18018: got suggestion: h1h2
+
+18018: wrote move: h1h2
+18034: valid  |h1h2
+
+18018: asked for suggestion
+18034: suggest|e4e3
+18018: got suggestion: e4e3
+
+18018: wrote move: e4e3
+18034: valid  |e4e3
+
+18018: asked for suggestion
+18034: suggest|f4e3
+18018: got suggestion: f4e3
+
+18018: wrote move: f4e3
+18034: valid  |f4e3
+
+18018: asked for suggestion
+18034: suggest|b2d1
+18018: got suggestion: b2d1
+
+18018: wrote move: b2d1
+18034: valid  |b2d1
+
+18018: asked for suggestion
+18034: suggest|f2f3
+18018: got suggestion: f2f3
+
+18018: wrote move: f2f3
+18034: valid  |f2f3
+
+18018: asked for suggestion
+18034: suggest|g8f6
+18018: got suggestion: g8f6
+
+18018: wrote move: g8f6
+18034: valid  |g8f6
+
+18018: asked for suggestion
+18034: suggest|f1d2
+18018: got suggestion: f1d2
+
+18018: wrote move: f1d2
+18034: valid  |f1d2
+
+18018: asked for suggestion
+18034: suggest|h6g5
+18018: got suggestion: h6g5
+
+18018: wrote move: h6g5
+18034: valid  |h6g5
+
+18018: asked for suggestion
+18034: suggest|g2f1
+18018: got suggestion: g2f1
+
+18018: wrote move: g2f1
+18034: valid  |g2f1
+
+18018: asked for suggestion
+18034: suggest|f8g8
+18018: got suggestion: f8g8
+
+18018: wrote move: f8g8
+18034: valid  |f8g8
+
+18018: asked for suggestion
+18034: suggest|e3a7
+18018: got suggestion: e3a7
+
+18018: wrote move: e3a7
+18034: valid  |e3a7
+
+18018: asked for suggestion
+18034: suggest|g7h6
+18018: got suggestion: g7h6
+
+18018: wrote move: g7h6
+18034: valid  |g7h6
+
+18018: asked for suggestion
+18034: suggest|h2h1
+18018: got suggestion: h2h1
+
+18018: wrote move: h2h1
+18034: valid  |h2h1
+
+18018: asked for suggestion
+18034: suggest|g8a8
+18018: got suggestion: g8a8
+
+18018: wrote move: g8a8
+18034: valid  |g8a8
+
+18018: asked for suggestion
+18034: suggest|d2e4
+18018: got suggestion: d2e4
+
+18018: wrote move: d2e4
+18034: valid  |d2e4
+
+18018: asked for suggestion
+18034: suggest|h6f8
+18018: got suggestion: h6f8
+
+18018: wrote move: h6f8
+18034: valid  |h6f8
+
+18018: asked for suggestion
+18034: suggest|h1h3
+18018: got suggestion: h1h3
+
+18018: wrote move: h1h3
+18034: valid  |h1h3
+
+18018: asked for suggestion
+18034: suggest|a8e8
+18018: got suggestion: a8e8
+
+18018: wrote move: a8e8
+18034: valid  |a8e8
+
+18018: asked for suggestion
+18034: suggest|h3h2
+18018: got suggestion: h3h2
+
+18018: wrote move: h3h2
+18034: valid  |h3h2
+
+18018: asked for suggestion
+18034: suggest|f7g6
+18018: got suggestion: f7g6
+
+18018: wrote move: f7g6
+18034: valid  |f7g6
+
+18018: asked for suggestion
+18034: suggest|h2h3
+18018: got suggestion: h2h3
+
+18018: wrote move: h2h3
+18034: valid  |h2h3
+
+18018: asked for suggestion
+18034: suggest|e8e5
+18018: got suggestion: e8e5
+
+18018: wrote move: e8e5
+18034: valid  |e8e5
+
+18018: asked for suggestion
+18034: suggest|f3g2
+18018: got suggestion: f3g2
+
+18018: wrote move: f3g2
+18034: valid  |f3g2
+
+18018: asked for suggestion
+18034: suggest|h7f7
+18018: got suggestion: h7f7
+
+18018: wrote move: h7f7
+18034: valid  |h7f7
+
+18018: asked for suggestion
+18034: suggest|c7c8
+18018: got suggestion: c7c8
+
+18018: wrote move: c7c8
+18034: valid  |c7c8
+
+18018: asked for suggestion
+18034: suggest|f8g7
+18018: got suggestion: f8g7
+
+18018: wrote move: f8g7
+18034: valid  |f8g7
+
+18018: asked for suggestion
+18034: suggest|f1d3
+18018: got suggestion: f1d3
+
+18018: wrote move: f1d3
+18034: valid  |f1d3
+
+18018: asked for suggestion
+18034: suggest|g7h8
+18018: got suggestion: g7h8
+
+18018: wrote move: g7h8
+18034: valid  |g7h8
+
+18018: asked for suggestion
+18034: suggest|a7b6
+18018: got suggestion: a7b6
+
+18018: wrote move: a7b6
+18034: valid  |a7b6
+
+18018: asked for suggestion
+18034: suggest|d1b2
+18018: got suggestion: d1b2
+
+18018: wrote move: d1b2
+18034: valid  |d1b2
+
+18018: asked for suggestion
+18034: suggest|e4g3
+18018: got suggestion: e4g3
+
+18018: wrote move: e4g3
+18034: valid  |e4g3
+
+18018: asked for suggestion
+18034: suggest|g6g7
+18018: got suggestion: g6g7
+
+18018: wrote move: g6g7
+18034: valid  |g6g7
+
+18018: asked for suggestion
+18034: suggest|h3h1
+18018: got suggestion: h3h1
+
+18018: wrote move: h3h1
+18034: valid  |h3h1
+
+18018: asked for suggestion
+18034: suggest|f6h7
+18018: got suggestion: f6h7
+
+18018: wrote move: f6h7
+18034: valid  |f6h7
+
+18018: asked for suggestion
+18034: suggest|b6g1
+18018: got suggestion: b6g1
+
+18018: wrote move: b6g1
+18034: valid  |b6g1
+
+18018: asked for suggestion
+18034: suggest|g7f8
+18018: got suggestion: g7f8
+
+18018: wrote move: g7f8
+18034: valid  |g7f8
+
+18018: asked for suggestion
+18034: suggest|b3a3
+18018: got suggestion: b3a3
+
+18018: wrote move: b3a3
+18034: valid  |b3a3
+
+18018: asked for suggestion
+18034: suggest|b4a3
+18018: got suggestion: b4a3
+
+18018: wrote move: b4a3
+18034: valid  |b4a3
+
+18018: asked for suggestion
+18034: suggest|g3h5
+18018: got suggestion: g3h5
+
+18018: wrote move: g3h5
+18034: valid  |g3h5
+
+18018: asked for suggestion
+18034: suggest|h7f6
+18018: got suggestion: h7f6
+
+18018: wrote move: h7f6
+18034: valid  |h7f6
+
+18018: asked for suggestion
+18034: suggest|h4g5
+18018: got suggestion: h4g5
+
+18018: wrote move: h4g5
+18034: valid  |h4g5
+
+18018: asked for suggestion
+18034: suggest|f8e7
+18018: got suggestion: f8e7
+
+18018: wrote move: f8e7
+18034: valid  |f8e7
+
+18018: asked for suggestion
+18034: suggest|d3e2
+18018: got suggestion: d3e2
+
+18018: wrote move: d3e2
+18034: valid  |d3e2
+
+18018: asked for suggestion
+18034: suggest|h8g7
+18018: got suggestion: h8g7
+
+18018: wrote move: h8g7
+18034: valid  |h8g7
+
+18018: asked for suggestion
+18034: suggest|g5g6
+18018: got suggestion: g5g6
+
+18018: wrote move: g5g6
+18034: valid  |g5g6
+
+18018: asked for suggestion
+18034: suggest|f6d7
+18018: got suggestion: f6d7
+
+18018: wrote move: f6d7
+18034: valid  |f6d7
+
+18018: asked for suggestion
+18034: suggest|a6b7
+18018: got suggestion: a6b7
+
+18018: wrote move: a6b7
+18034: valid  |a6b7
+
+18018: asked for suggestion
+18034: suggest|g7h8
+18018: got suggestion: g7h8
+
+18018: wrote move: g7h8
+18034: valid  |g7h8
+
+18018: asked for suggestion
+18034: suggest|g6g7
+18018: got suggestion: g6g7
+
+18018: wrote move: g6g7
+18034: valid  |g6g7
+
+18018: asked for suggestion
+18034: suggest|a3a2
+18018: got suggestion: a3a2
+
+18018: wrote move: a3a2
+18034: valid  |a3a2
+
+18018: asked for suggestion
+18034: suggest|e2d1
+18018: got suggestion: e2d1
+
+18018: wrote move: e2d1
+18034: valid  |e2d1
+
+18018: asked for suggestion
+18034: suggest|e7e8
+18018: got suggestion: e7e8
+
+18018: wrote move: e7e8
+18034: valid  |e7e8
+
+18018: asked for suggestion
+18034: suggest|g1b6
+18018: got suggestion: g1b6
+
+18018: wrote move: g1b6
+18034: valid  |g1b6
+
+18018: asked for suggestion
+18034: suggest|f7f4
+18018: got suggestion: f7f4
+
+18018: wrote move: f7f4
+18034: valid  |f7f4
+
+18018: asked for suggestion
+18034: suggest|g7h8
+18018: got suggestion: g7h8
+
+18018: wrote move: g7h8
+18034: valid  |g7h8
+
+18018: asked for suggestion
+18034: suggest|e5d6
+18018: got suggestion: e5d6
+
+18018: wrote move: e5d6
+18034: valid  |e5d6
+
+18018: asked for suggestion
+18034: suggest|b6c5
+18018: got suggestion: b6c5
+
+18018: wrote move: b6c5
+18034: valid  |b6c5
+
+18018: asked for suggestion
+18034: suggest|d6h6
+18018: got suggestion: d6h6
+
+18018: wrote move: d6h6
+18034: valid  |d6h6
+
+18018: asked for suggestion
+18034: suggest|h1e1
+18018: got suggestion: h1e1
+
+18018: wrote move: h1e1
+18034: valid  |h1e1
+
+18018: asked for suggestion
+18034: suggest|e8d8
+18018: got suggestion: e8d8
+
+18018: wrote move: e8d8
+18034: valid  |e8d8
+
+18018: asked for suggestion
+18034: suggest|h5f6
+18018: got suggestion: h5f6
+
+18018: wrote move: h5f6
+18034: valid  |h5f6
+
+18018: asked for suggestion
+18034: suggest|d7f6
+18018: got suggestion: d7f6
+
+18018: wrote move: d7f6
+18034: valid  |d7f6
+
+18018: asked for suggestion
+18034: suggest|b7b2
+18018: got suggestion: b7b2
+
+18018: wrote move: b7b2
+18034: valid  |b7b2
+
+18018: asked for suggestion
+18034: suggest|d8c7
+18018: got suggestion: d8c7
+
+18018: wrote move: d8c7
+18034: valid  |d8c7
+
+18018: asked for suggestion
+18034: suggest|b2e5
+18018: got suggestion: b2e5
+
+18018: wrote move: b2e5
+18034: valid  |b2e5
+
+18018: asked for suggestion
+18034: suggest|c7c8
+18018: got suggestion: c7c8
+
+18018: wrote move: c7c8
+18034: valid  |c7c8
+
+18018: asked for suggestion
+18034: suggest|c5e3
+18018: got suggestion: c5e3
+
+18018: wrote move: c5e3
+18034: valid  |c5e3
+
+18018: asked for suggestion
+18034: suggest|h6h8
+18018: got suggestion: h6h8
+
+18018: wrote move: h6h8
+18034: valid  |h6h8
+
+18018: asked for suggestion
+18034: suggest|e1h1
+18018: got suggestion: e1h1
+
+18018: wrote move: e1h1
+18034: valid  |e1h1
+
+18018: asked for suggestion
+18034: suggest|c8b7
+18018: got suggestion: c8b7
+
+18018: wrote move: c8b7
+18034: valid  |c8b7
+
+18018: asked for suggestion
+18034: suggest|e3f4
+18018: got suggestion: e3f4
+
+18018: wrote move: e3f4
+18034: valid  |e3f4
+
+18018: asked for suggestion
+18034: suggest|f6h5
+18018: got suggestion: f6h5
+
+18018: wrote move: f6h5
+18034: valid  |f6h5
+
+18018: asked for suggestion
+18034: suggest|d1h5
+18018: got suggestion: d1h5
+
+18018: wrote move: d1h5
+18034: valid  |d1h5
+
+18018: asked for suggestion
+18034: suggest|h8d8
+18018: got suggestion: h8d8
+
+18018: wrote move: h8d8
+18034: valid  |h8d8
+
+18018: asked for suggestion
+18034: suggest|g2f3
+18018: got suggestion: g2f3
+
+18018: wrote move: g2f3
+18034: valid  |g2f3
+
+18018: End (from parent)
+18034: Stop agent0
+18018: End agent handler
