@@ -41,6 +41,8 @@ public:
     int HEIGHT;
     float aspect_ratio;
     glm::mat4 projection;
+    bool render_continuously;
+    bool render_flag;
 
     // Shaders and textures and fonts
     Resource_manager * rm;

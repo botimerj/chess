@@ -19,6 +19,7 @@ Game::Game(){
 
 void Game::set_board(std::string str_in){
     fen_to_gs(str_in);
+    result = -1;
 }
 
 void Game::fen_to_gs(std::string fen){
@@ -159,6 +160,9 @@ std::string Game::gs_to_fen(){
 ////////////////////////
 
 bool Game::move(TS sel, glm::ivec2 to, glm::ivec2 from){
+    if(result != -1){
+        std::cout << "Result: " << result << ". Start another game." << std::endl;
+    }
 
     // Check same square
     bool same_square = (to.x == from.x) && (to.y == from.y);
@@ -226,6 +230,28 @@ bool Game::move(TS sel, glm::ivec2 to, glm::ivec2 from){
             en_passant = glm::ivec2(from.x, from.y+1);
         else
             en_passant = glm::ivec2(-1, -1);
+
+        // Check winning condition
+        bool has_valid_moves = false;
+        for(int i = 0; i < 8; i++){
+            for(int j = 0; j < 8; j++){
+                if(ts_color(bstate[i][j]) == turn){
+                    if(!valid_moves(bstate[i][j], glm::ivec2(i,j)).empty()){
+                        has_valid_moves = true;
+                        break;
+                    }
+                }
+            }
+        }
+
+        if(!has_valid_moves){ // no valid moves for next player
+            glm::ivec2 k_idx = king_idx(turn);
+            if(tile_attacked(k_idx, !turn)) result = !turn; //checkmate
+            else                            result = 2; // stalemate
+        }
+        if(onehundred_move_rule >= 100){
+            result = 2; //stalemate
+        }
 
         return true;
     }

@@ -103,7 +103,10 @@ int main(){
 
                 move_list = game->valid_moves(game->bstate[from.x][from.y], from);
             }
-            if(!move_list.empty()){
+
+            if(game->result != -1){ // Game is over
+                write(STDOUT_FILENO, move_str, strlen(move_str));
+            }else if(!move_list.empty()){ // Found a valid move
                 std::list<glm::ivec2>::iterator it = move_list.begin();
                 std::advance(it, rand()%move_list.size());
                 to = *it;
@@ -117,8 +120,9 @@ int main(){
                 //printf("from(%d,%d) to(%d,%d)\n", from.x, from.y, to.x, to.y);
                 //printf("%s\n", move_str);
                 write(STDOUT_FILENO, move_str, strlen(move_str));
-            }else{
-                printf("No valid moves\n");
+            }else{ // Did not find a valid move
+                write(STDOUT_FILENO, move_str, strlen(move_str));
+                //printf("No valid moves\n");
             }
             std::string status;
             status = std::string("suggest|")+std::string(move_str)+std::string("\n");

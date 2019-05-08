@@ -75,12 +75,19 @@ int main()
         //gs.processInput();
 
         // render
-        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
-        ui.render();
+        //glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+        //glClear(GL_COLOR_BUFFER_BIT);
+        //ui.render();
+        if(ui.render_continuously){
+            ui.render();
+        }else if(ui.render_flag == true){
+            ui.render();
+            ui.render_flag = false;
+        }
+        usleep(20000);
 
         // glfw: swap buffers and poll IO events 
-        glfwSwapBuffers(window);
+        //glfwSwapBuffers(window);
         glfwPollEvents();
     }
 
@@ -94,6 +101,8 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height){
     glViewport(0, 0, width, height);
     UI *uiPtr = static_cast<UI*>(glfwGetWindowUserPointer(window));
     uiPtr->resize_window(width, height);
+
+    uiPtr->render();
 }
 
 void mouse_button_callback(GLFWwindow* window, int button, int action, int mods){
@@ -102,5 +111,6 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
         uiPtr->left_click(action);
     else if(button == GLFW_MOUSE_BUTTON_RIGHT)
         uiPtr->right_click(action);
-}
 
+    uiPtr->render();
+}

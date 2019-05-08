@@ -123,14 +123,23 @@ Board::Board(Resource_manager *rm, Game * game_in){
     flip = false;
 
     // Tile Color arr
-    color_arr[0] = glm::vec3(0.2f,0.2f,0.2f); // black
+    //color_arr[0] = glm::vec3(0.0f,0.3f,0.3f); // black
+    //color_arr[1] = glm::vec3(0.0f,0.8f,0.8f); // white 
+
+    //color_arr[2] = glm::vec3(1.0f,0.2f,0.2f); // highlighted 
+    //color_arr[3] = glm::vec3(0.4f,0.4f,1.0f); // selected 
+    //color_arr[4] = glm::vec3(0.6f,0.6f,1.0f); // played from 
+    //color_arr[5] = glm::vec3(1.0f,0.3f,0.3f); // check 
+    //color_arr[6] = glm::vec3(1.0f,1.0f,1.0f); // none 
+    
+    color_arr[0] = glm::vec3(0.3f,0.3f,0.3f); // black
     color_arr[1] = glm::vec3(0.8f,0.8f,0.8f); // white 
 
-    color_arr[2] = glm::vec3(1.0f,0.2f,0.2f); // highlighted 
-    color_arr[3] = glm::vec3(0.4f,0.4f,1.0f); // selected 
-    color_arr[4] = glm::vec3(0.6f,0.6f,1.0f); // played from 
-    color_arr[5] = glm::vec3(1.0f,0.2f,0.2f); // check 
-    color_arr[6] = glm::vec3(1.0f,1.0f,1.0f); // none 
+    color_arr[2] = glm::vec3( 0.1f,-1.0f,-1.0f); // highlighted 
+    color_arr[3] = glm::vec3(-1.0f,-1.0f, 1.0f); // selected 
+    color_arr[4] = glm::vec3(-0.2f,-0.2f, 1.0f); // played from 
+    color_arr[5] = glm::vec3( 1.0f,-1.0f,-1.0f); // check 
+    color_arr[6] = glm::vec3( 0.0f, 0.0f, 0.0f); // none 
 
     // Create tiles and Pieces array
     tile = new Tile(rm); 
@@ -182,7 +191,7 @@ void Board::render(glm::vec2 mpos, float aspect_ratio){
     if(flip){
         x_initial += dim-tile_size;
         y_initial += dim-tile_size;
-        t = 0;
+        t = 1;
         mod = -1;
     }
     glm::vec2 pos(x_initial, y_initial);
@@ -191,10 +200,14 @@ void Board::render(glm::vec2 mpos, float aspect_ratio){
     for(int y = 0; y < 8; y++){
         for(int x = 0; x < 8; x++){
             // Paint tiles 
-            int c_idx = static_cast<int> (bcolor[x][y]);
-            glm::vec3 tc(color_arr[t].x*color_arr[c_idx].x,
-                         color_arr[t].y*color_arr[c_idx].y,
-                         color_arr[t].z*color_arr[c_idx].z);
+            int c_idx = static_cast<int>(bcolor[x][y]);
+            glm::vec3 tc(color_arr[t].x+color_arr[c_idx].x,
+                         color_arr[t].y+color_arr[c_idx].y,
+                         color_arr[t].z+color_arr[c_idx].z);
+
+            if(tc.x < 0.1f) tc.x = 0.1f; if(tc.x > 0.9f) tc.x = 0.9f;
+            if(tc.y < 0.1f) tc.y = 0.1f; if(tc.y > 0.9f) tc.y = 0.9f; 
+            if(tc.z < 0.1f) tc.z = 0.1f; if(tc.z > 0.9f) tc.z = 0.9f;
             tile->render(tc, pos, tile_size);
 
             // Add text to board

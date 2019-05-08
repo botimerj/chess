@@ -24,6 +24,10 @@ UI::UI(GLFWwindow* window, int WIDTH, int HEIGHT){
     t_listen = std::thread(&UI::listen, this); 
 
     kill_agent = true;
+
+    render_continuously = false;
+    render_flag = true;
+
 }
 
 UI::~UI(){
@@ -34,8 +38,10 @@ UI::~UI(){
     delete game;
 
     // End threads and join 
-    kill_agent = true;
-    t_agent.join();
+    if(!kill_agent){
+        kill_agent = true;
+        t_agent.join();
+    }
 
     exit = false;
     t_listen.join();
@@ -59,10 +65,15 @@ void UI::resize_window(int width, int height){
 
 void UI::render(){
 
+    glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT);
+
     get_mouse_pos();
     //menu->render(aspect_ratio);
     board->render(mouse_pos, aspect_ratio);
     //tbox->render();
+    
+    glfwSwapBuffers(window);
 }
 
 void UI::right_click(int action){
@@ -76,6 +87,9 @@ void UI::right_click(int action){
 
 void UI::left_click(int action){
     bool down = (action == GLFW_PRESS);
+    if(down) render_continuously = true;
+    else render_continuously = false;
+
     get_mouse_pos();
 
     // Board left click
@@ -139,13 +153,15 @@ void UI::listen(){
             kill_agent = false;
             t_agent = std::thread(&UI::agent_handler, this); 
         }
-        if( std::string(in).compare("kill") == 0 ) {
+        if( !kill_agent && std::string(in).compare("kill") == 0 ) {
             kill_agent = true;
             t_agent.join();
         }
+        render_flag = true;
     }
 }
 
+// Agent funcitons
 void UI::agent_handler(){
 
     clear_log_file();
@@ -193,6 +209,11 @@ void UI::agent_handler(){
 
             readsize = read(o_pipe[PIPE_READ], readbuf, 32);
             if(readsize > 0){
+                if(readbuf[0] == '-'){
+                    std::cout << "Killing agent" << std::endl;
+                    kill_agent = true;
+                    break;
+                }
                 log_string = std::string("got suggestion: ") + std::string(readbuf);
                 write_log_file(getpid(), std::string(log_string).c_str());
 
@@ -219,7 +240,8 @@ void UI::agent_handler(){
                 write_log_file(getpid(), std::string(log_string).c_str());
 
             }
-            usleep(2000000);
+            render_flag = true;
+            usleep(/*1000000*/500000);
         }
 
         const char * kill_str = "kill\n";
@@ -230,18 +252,6 @@ void UI::agent_handler(){
     }
 
     write_log_file(getpid(), "End agent handler\n");
-}
-
-// Helper function
-bool UI::valid_move_string(char * in){
-    std::string in_str(in);
-
-    if(in_str.find_first_of("abcdefgh",0) != 0) return false;
-    if(in_str.find_first_of("12345678",1) != 1) return false;
-    if(in_str.find_first_of("abcdefgh",2) != 2) return false;
-    if(in_str.find_first_of("12345678",3) != 3) return false;
-    return true;
-
 }
 
 void UI::write_log_file(int pid, const char * status){
@@ -267,4 +277,15 @@ void UI::clear_log_file(){
     }
 }
 
+// Helper function
+bool UI::valid_move_string(char * in){
+    std::string in_str(in);
+
+    if(in_str.find_first_of("abcdefgh",0) != 0) return false;
+    if(in_str.find_first_of("12345678",1) != 1) return false;
+    if(in_str.find_first_of("abcdefgh",2) != 2) return false;
+    if(in_str.find_first_of("12345678",3) != 3) return false;
+    return true;
+
+}
 

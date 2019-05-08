@@ -30,6 +30,7 @@ public:
     std::map<char, TS> char_to_ts;
 
     // gamestate variables
+    int result; // -1 - game is in progress | 0 - white wins | 1 - black wins | 2 - stalemate
     TS bstate[8][8];         
     bool turn;              // 0 - white; 1 - black
     bool wk_castle;          
