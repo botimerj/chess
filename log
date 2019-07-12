@@ -1,55 +1,124 @@
-19827: Start agent handler
-19827: Begin parent
-19840: Starting agent0 (from child)
-19827: asked for suggestion
-19840: Start agent0
-19840: suggest|g1f3
-19827: got suggestion: g1f3
-19827: wrote move: g1f3
-19840: valid  |g1f3
+1888: Start agent handler
+1888: Begin parent
+1899: Starting agent (from child)
+1888: asked for suggestion
+1899: Start agent1
+1899: suggest|a2a3
+1888: got suggestion: a2a3
+1888: wrote move: a2a3
+1899: valid  |a2a3
+1888: wrote last move: e7e5
+1888: asked for suggestion
+1899: valid  |e7e5
+1899: suggest|a3a4
+1888: got suggestion: a3a4
 
-19827: asked for suggestion
-19840: suggest|b8a6
-19827: got suggestion: b8a6
-19827: wrote move: b8a6
-19840: valid  |b8a6
+1888: wrote move: a3a4
+1899: valid  |a3a4
+1888: wrote last move: g8f6
+1888: asked for suggestion
+1899: valid  |g8f6
+1899: suggest|a4a5
+1888: got suggestion: a4a5
 
-19827: asked for suggestion
-19840: suggest|d2d3
-19827: got suggestion: d2d3
-19827: wrote move: d2d3
-19840: valid  |d2d3
+1888: wrote move: a4a5
+1899: valid  |a4a5
+1888: wrote last move: f8c5
+1888: asked for suggestion
+1899: valid  |f8c5
+1899: suggest|a5a6
+1888: got suggestion: a5a6
 
-19827: asked for suggestion
-19840: suggest|f7f6
-19827: got suggestion: f7f6
-19827: wrote move: f7f6
-19840: valid  |f7f6
+1888: wrote move: a5a6
+1899: valid  |a5a6
+1888: wrote last move: b8a6
+1888: asked for suggestion
+1899: valid  |b8a6
+1899: suggest|a1a6
+1888: got suggestion: a1a6
 
-19827: asked for suggestion
-19840: suggest|e1d2
-19827: got suggestion: e1d2
-19827: wrote move: e1d2
-19840: valid  |e1d2
+1888: wrote move: a1a6
+1899: valid  |a1a6
+1888: wrote last move: b7a6
+1888: asked for suggestion
+1899: valid  |b7a6
+1899: suggest|b2b3
+1888: got suggestion: b2b3
 
-19827: asked for suggestion
-19840: suggest|d7d5
-19827: got suggestion: d7d5
-19827: wrote move: d7d5
-19840: valid  |d7d5
+1888: wrote move: b2b3
+1899: valid  |b2b3
+1888: wrote last move: c8b7
+1888: asked for suggestion
+1899: valid  |c8b7
+1899: suggest|b3b4
+1888: got suggestion: b3b4
 
-19827: asked for suggestion
-19840: suggest|h2h4
-19827: got suggestion: h2h4
-19827: wrote move: h2h4
-19840: valid  |h2h4
+1888: wrote move: b3b4
+1899: valid  |b3b4
+1888: wrote last move: c5b4
+1888: asked for suggestion
+1899: valid  |c5b4
+1899: suggest|b1a3
+1888: got suggestion: b1a3
 
-19827: asked for suggestion
-19840: suggest|a8b8
-19827: got suggestion: a8b8
-19827: wrote move: a8b8
-19840: valid  |a8b8
+1888: wrote move: b1a3
+1899: valid  |b1a3
+1888: wrote last move: a6a5
+1888: asked for suggestion
+1899: valid  |a6a5
+1899: suggest|a3b5
+1888: got suggestion: a3b5
 
-19827: End (from parent)
-19840: Stop agent0
-19827: End agent handler
+1888: wrote move: a3b5
+1899: valid  |a3b5
+1888: wrote last move: b7c6
+1888: asked for suggestion
+1899: valid  |b7c6
+1899: suggest|b5a7
+1888: got suggestion: b5a7
+
+1888: wrote move: b5a7
+1899: valid  |b5a7
+1888: wrote last move: a8a7
+1888: asked for suggestion
+1899: valid  |a8a7
+1899: suggest|c2c3
+1888: got suggestion: c2c3
+
+1888: wrote move: c2c3
+1899: valid  |c2c3
+1888: wrote last move: b4e7
+1888: asked for suggestion
+1899: valid  |b4e7
+1899: suggest|d1b3
+1888: got suggestion: d1b3
+
+1888: wrote move: d1b3
+1899: valid  |d1b3
+1888: wrote last move: e8g8
+1888: asked for suggestion
+1899: valid  |e8g8
+1899: suggest|b3a2
+1888: got suggestion: b3a2
+
+1888: wrote move: b3a2
+1899: valid  |b3a2
+1888: wrote last move: a5a4
+1888: asked for suggestion
+1899: valid  |a5a4
+1899: suggest|a2b1
+1888: got suggestion: a2b1
+
+1888: wrote move: a2b1
+1899: valid  |a2b1
+1888: wrote last move: a7b7
+1888: asked for suggestion
+1899: valid  |a7b7
+1899: suggest|b1a2
+1888: got suggestion: b1a2
+
+1888: wrote move: b1a2
+1899: valid  |b1a2
+1888: End (from parent)
+1899: Stop agent1
+1888: End agent handler

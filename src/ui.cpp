@@ -23,8 +23,12 @@ UI::UI(GLFWwindow* window, int WIDTH, int HEIGHT){
     exit = true; // I'm pretty sure this could case a race
     t_listen = std::thread(&UI::listen, this); 
 
-    kill_agent = true;
+    // Agent threads
+    kill_agent_w = true;
+    kill_agent_b = true;
+    clear_log_file();
 
+    // Render variables
     render_continuously = false;
     render_flag = true;
 
@@ -38,9 +42,13 @@ UI::~UI(){
     delete game;
 
     // End threads and join 
-    if(!kill_agent){
-        kill_agent = true;
-        t_agent.join();
+    if(!kill_agent_w){
+        kill_agent_w = true;
+        t_agent_w.join();
+    }
+    if(!kill_agent_b){
+        kill_agent_b = true;
+        t_agent_b.join();
     }
 
     exit = false;
@@ -112,6 +120,7 @@ void UI::listen(){
         std::cin.getline(in, 256);
         if( std::string(in).compare("reset") == 0 ){
             game->set_board(game->default_pos);
+            board->reset();
         }
         if( std::string(in).compare("print") == 0 ) {
             std::cout << game->gs_to_fen() << std::endl;
@@ -148,23 +157,38 @@ void UI::listen(){
                 board->move(from, to);
             }
         }
-        if( std::string(in).compare("computer") == 0 ) {
-            // Spawn agent 0
-            kill_agent = false;
-            t_agent = std::thread(&UI::agent_handler, this); 
+        if( std::string(in).compare("computer_w") == 0 ) {
+            if(kill_agent_w == true){
+                kill_agent_w = false;
+                t_agent_w = std::thread(&UI::agent_handler, this, 0, "./agent2"); 
+            }else{
+                printf("Please kill the agent_w before starting again\n");
+            }
         }
-        if( !kill_agent && std::string(in).compare("kill") == 0 ) {
-            kill_agent = true;
-            t_agent.join();
+        if( !kill_agent_w && std::string(in).compare("kill_w") == 0 ) {
+            kill_agent_w = true;
+            t_agent_w.join();
+        }
+        if( std::string(in).compare("computer_b") == 0 ) {
+            if(kill_agent_b == true){
+                kill_agent_b = false;
+                t_agent_b = std::thread(&UI::agent_handler, this, 1, "./agent2"); 
+            }else{
+                printf("Please kill the agent_b before starting again\n");
+            }
+        }
+        if( !kill_agent_b && std::string(in).compare("kill_b") == 0 ) {
+            kill_agent_b = true;
+            t_agent_b.join();
         }
         render_flag = true;
     }
 }
 
 // Agent funcitons
-void UI::agent_handler(){
+void UI::agent_handler(int color, const char * agent){
 
-    clear_log_file();
+    //clear_log_file();
     write_log_file(getpid(), "Start agent handler\n");
 
     int i_pipe[2];
@@ -187,8 +211,8 @@ void UI::agent_handler(){
         close(i_pipe[PIPE_READ]); close(i_pipe[PIPE_WRITE]);
         close(o_pipe[PIPE_READ]); close(o_pipe[PIPE_WRITE]);
 
-        write_log_file(getpid(), "Starting agent0 (from child)\n");
-        execl("./agent0", "./agent0", (char *)0);
+        write_log_file(getpid(), "Starting agent (from child)\n");
+        execl(agent, agent, (char *)0);
         printf("Error!");
 
     }else{
@@ -199,38 +223,55 @@ void UI::agent_handler(){
 
         char readbuf[32];
         const char * suggest_str = "suggest\n";
+        const char * kill_str = "kill\n";
         ssize_t readsize;
         std::string log_string;
 
-        while(!kill_agent){
+        bool *kill_agent;
+        if(color == 0) kill_agent = &kill_agent_w;
+        else           kill_agent = &kill_agent_b;
+        while(!(*kill_agent)){
+
             
+            if(color != game->turn){
+                usleep(200000);
+                continue;
+            }
+
+            if(game->last_move[0] != '-'){
+                std::string write_move = game->last_move + std::string("\n");
+                write(i_pipe[PIPE_WRITE], write_move.c_str(), strlen(suggest_str));
+                log_string = std::string("wrote last move: ") + game->last_move + std::string("\n");
+                write_log_file(getpid(), log_string.c_str());
+            }
+
             write(i_pipe[PIPE_WRITE], suggest_str, strlen(suggest_str));
             write_log_file(getpid(), "asked for suggestion\n");
+            usleep(500000);
 
             readsize = read(o_pipe[PIPE_READ], readbuf, 32);
             if(readsize > 0){
                 if(readbuf[0] == '-'){
                     std::cout << "Killing agent" << std::endl;
-                    kill_agent = true;
+                    //kill_agent_w = true;
                     break;
                 }
-                log_string = std::string("got suggestion: ") + std::string(readbuf);
+
+                log_string = std::string("got suggestion: ") + std::string(readbuf) + std::string("\n");
                 write_log_file(getpid(), std::string(log_string).c_str());
-
-                //readbuf[readsize] = '\0';
-
+                 
                 int x_to = readbuf[2]-'a';
                 int y_to = 7-(readbuf[3]-'1');
 
                 int x_from = readbuf[0]-'a';
                 int y_from = 7-(readbuf[1]-'1');
-                //printf("Valid move; from(%d,%d) to(%d,%d)\n", x_from, y_from, x_to, y_to);
 
                 glm::ivec2 to(x_to,y_to);
                 glm::ivec2 from(x_from,y_from);
                 TS sel = game->bstate[x_from][y_from];
                 if(game->move(sel, to, from)){
                     board->move(from, to);
+                    render_flag = true;
                 }
 
                 readbuf[readsize] = '\n';
@@ -238,13 +279,9 @@ void UI::agent_handler(){
 
                 log_string = std::string("wrote move: ") + std::string(readbuf);
                 write_log_file(getpid(), std::string(log_string).c_str());
-
             }
-            render_flag = true;
-            usleep(/*1000000*/500000);
         }
 
-        const char * kill_str = "kill\n";
         write(i_pipe[PIPE_WRITE], kill_str, strlen(kill_str));
 
         close(o_pipe[PIPE_READ]);

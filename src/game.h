@@ -41,6 +41,7 @@ public:
     int  fifty_move_rule;
     int  onehundred_move_rule;
     int  total_moves;
+    std::string last_move;
     // Some way to hold 3 move repeat 
 
     std::string default_pos;
@@ -61,7 +62,6 @@ public:
     std::list<glm::ivec2> queen  (glm::ivec2 from);
     std::list<glm::ivec2> knight (glm::ivec2 from);
     std::list<glm::ivec2> king   (glm::ivec2 from);
-    //bool in_check(int color);
     bool tile_attacked(glm::ivec2 tile, int color);
 
     // Helper functions
@@ -70,6 +70,7 @@ public:
     bool opposite_piece(glm::ivec2 idx0, glm::ivec2 idx1);
     TS read_bstate(int x, int y);
     bool in_bounds(int x, int y);
+    std::string vec_to_move_str(glm::ivec2 to, glm::ivec2 from);
 };
 
 #endif

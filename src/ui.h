@@ -75,9 +75,11 @@ public:
     bool valid_move_string(char * in);
 
     // agent handler
-    bool kill_agent;
-    std::thread t_agent;
-    void agent_handler();
+    bool kill_agent_w;
+    bool kill_agent_b;
+    std::thread t_agent_w;
+    std::thread t_agent_b;
+    void agent_handler(int color, const char * agent);
     void write_log_file(int pid, const char * status);
     void clear_log_file();
 };

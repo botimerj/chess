@@ -86,6 +86,7 @@ public:
 
     Board(Resource_manager *rm, Game * game);
     ~Board();
+    void reset();
 
     void render(glm::vec2 mpos, float aspect_ratio);
     void recolor_tiles();

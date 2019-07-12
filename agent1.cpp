@@ -9,6 +9,15 @@
 // Custom libraries
 #include <game.h>
 
+int piece_value(TS piece){
+    if(piece == TS::q || piece == TS::Q) return 10;
+    if(piece == TS::r || piece == TS::R) return 5;
+    if(piece == TS::b || piece == TS::B) return 3;
+    if(piece == TS::n || piece == TS::N) return 3;
+    if(piece == TS::p || piece == TS::P) return 1;
+    if(piece == TS::k || piece == TS::K) return 1;
+}
+
 bool valid_move_string(char * in){
     std::string in_str(in);
 
@@ -34,7 +43,7 @@ void write_log_file(int pid, const char * status){
 }
 
 int main(){
-    write_log_file(getpid(), "Start agent0\n");
+    write_log_file(getpid(), "Start agent1\n");
 
     srand(time(NULL));
     Game gamestate;
@@ -77,52 +86,59 @@ int main(){
 
             std::list<glm::ivec2> move_list;
             std::vector<glm::ivec2> piece_list;
+            TS sel;
 
             // Create a list of pieces
-            for(int i = 0; i < 8; i++){
-                for(int j = 0; j < 8; j++){
-                    if(game->ts_color(game->bstate[i][j]) == game->turn){
-                        piece_list.push_back(glm::ivec2(i,j));
+            int max_total = -10000000;
+            glm::ivec2 from = glm::ivec2(-1,-1);
+            glm::ivec2 to = glm::ivec2(-1,-1);
+
+            for(int i = 0; i < 8; i++){ for(int j = 0; j < 8; j++){
+                if(game->ts_color(game->bstate[i][j]) == game->turn){
+                    move_list = game->valid_moves(game->bstate[i][j], glm::ivec2(i,j));
+                    for(std::list<glm::ivec2>::iterator itt = move_list.begin(); itt != move_list.end(); ++itt){
+                        // Save old state
+                        sel = game->bstate[i][j];
+                        glm::ivec2 idx = *itt;
+                        TS bstate_old = game->bstate[idx.x][idx.y];
+
+                        game->bstate[i][j] = TS::e;
+                        game->bstate[idx.x][idx.y] = sel;
+
+                        // evaluate
+                        int good_total = 0;
+                        int bad_total = 0;
+                        for(int k = 0; k < 8; k++){ for(int l = 0; l < 8; l++){
+                            int mod = piece_value(game->bstate[k][l]);
+                            if(game->ts_color(game->bstate[k][l]) == game->turn) good_total += 1;
+                            else if( game->ts_color(game->bstate[k][l]) == !game->turn ) bad_total  += 1;
+                        }}
+                        int total = good_total - bad_total;
+                        if(total-max_total>0 || (rand()%10 > 8)){
+                            from = glm::ivec2(i,j);
+                            to = idx;
+                            max_total = total;
+                        }
+
+                        // Reset to old state
+                        game->bstate[i][j] = sel;
+                        game->bstate[idx.x][idx.y] = bstate_old;
                     }
                 }
-            }
+            }}
             
-            int idx;
-            glm::ivec2 from;
-            glm::ivec2 to;
             char move_str[5] = {'-','\0'};
-
-            // Pick a random move for a piece (unless piece cannot move)
-            while(move_list.empty()){
-                if(piece_list.empty()){
-                    break;
-                }
-                idx = rand() % piece_list.size();
-                from = piece_list[idx];
-                piece_list.erase(piece_list.begin() + idx);
-
-                move_list = game->valid_moves(game->bstate[from.x][from.y], from);
-            }
-
-            if(game->result != -1){ // Game is over
+            if(to.x == -1 || game->result != -1){
+                //no valid moves or game is over
                 write(STDOUT_FILENO, move_str, strlen(move_str));
-            }else if(!move_list.empty()){ // Found a valid move
-                std::list<glm::ivec2>::iterator it = move_list.begin();
-                std::advance(it, rand()%move_list.size());
-                to = *it;
-
+            }else{
                 move_str[0] = from.x+'a';
                 move_str[1] = (8-from.y)+'0';
                 move_str[2] = to.x+'a';
                 move_str[3] = (8-to.y)+'0';
                 move_str[4] = '\0';
 
-                //printf("from(%d,%d) to(%d,%d)\n", from.x, from.y, to.x, to.y);
-                //printf("%s\n", move_str);
                 write(STDOUT_FILENO, move_str, strlen(move_str));
-            }else{ // Did not find a valid move
-                write(STDOUT_FILENO, move_str, strlen(move_str));
-                //printf("No valid moves\n");
             }
             std::string status;
             status = std::string("suggest|")+std::string(move_str)+std::string("\n");
@@ -133,7 +149,6 @@ int main(){
             write_log_file(getpid(), "reset\n");
         }
     }
-
-    write_log_file(getpid(), "Stop agent0\n");
+    write_log_file(getpid(), "Stop agent1\n");
 }
 

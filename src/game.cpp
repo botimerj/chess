@@ -20,6 +20,7 @@ Game::Game(){
 void Game::set_board(std::string str_in){
     fen_to_gs(str_in);
     result = -1;
+    last_move = std::string("-");
 }
 
 void Game::fen_to_gs(std::string fen){
@@ -252,6 +253,8 @@ bool Game::move(TS sel, glm::ivec2 to, glm::ivec2 from){
         if(onehundred_move_rule >= 100){
             result = 2; //stalemate
         }
+
+        last_move = vec_to_move_str(to, from);
 
         return true;
     }
@@ -555,4 +558,16 @@ TS Game::read_bstate(int x, int y){
 
 bool Game::in_bounds(int x, int y){
     return x >=0 && x < 8 && y >= 0 && y < 8;
+}
+
+std::string Game::vec_to_move_str(glm::ivec2 to, glm::ivec2 from){
+
+    char move_str[5];
+    move_str[0] = from.x+'a';
+    move_str[1] = (8-from.y)+'0';
+    move_str[2] = to.x+'a';
+    move_str[3] = (8-to.y)+'0';
+    move_str[4] = '\0';
+
+    return std::string(move_str); 
 }

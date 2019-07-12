@@ -370,4 +370,11 @@ void Board::get_board_idx(glm::vec2 mpos, int *x, int *y){
 
 }
 
-
+void Board::reset(){
+    selected        = TS::e;
+    selected_idx    = glm::ivec2(-1, -1);
+    check_idx       = glm::ivec2(-1, -1);
+    played_from_idx = glm::ivec2(-1, -1);
+    played_to_idx   = glm::ivec2(-1, -1);
+    recolor_tiles();
+}

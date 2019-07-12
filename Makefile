@@ -22,6 +22,12 @@ game_test:
 agent0:
 	$(CC) $(INCLUDE) src/game.cpp agent0.cpp -o agent0 $(LINK) 
 
+agent1:
+	$(CC) $(INCLUDE) src/game.cpp agent1.cpp -o agent1 $(LINK) 
+
+agent2:
+	$(CC) $(INCLUDE) src/game.cpp agent2.cpp -o agent2 $(LINK) 
+
 clean:
 	rm main ui_test
-.PHONY: all chess ui_test game_test agent0
+.PHONY: all chess ui_test game_test agent0 agent1 agent2
